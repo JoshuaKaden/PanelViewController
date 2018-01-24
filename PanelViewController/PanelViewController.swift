@@ -38,6 +38,11 @@ class PanelViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        mainViewController.leaveParentViewController()
+        panelViewController.leaveParentViewController()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
