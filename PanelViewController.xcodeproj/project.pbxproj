@@ -13,6 +13,8 @@
 		93A3C0852018FD8C009E1804 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93A3C0842018FD8C009E1804 /* Assets.xcassets */; };
 		93A3C0882018FD8C009E1804 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93A3C0862018FD8C009E1804 /* LaunchScreen.storyboard */; };
 		93A3C0932018FD8C009E1804 /* PanelViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0922018FD8C009E1804 /* PanelViewControllerTests.swift */; };
+		93A3C09F2018FF30009E1804 /* UIViewController+Parenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */; };
+		93A3C0A120190130009E1804 /* PanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A020190130009E1804 /* PanelViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		93A3C08E2018FD8C009E1804 /* PanelViewControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PanelViewControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A3C0922018FD8C009E1804 /* PanelViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelViewControllerTests.swift; sourceTree = "<group>"; };
 		93A3C0942018FD8C009E1804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Parenting.swift"; sourceTree = "<group>"; };
+		93A3C0A020190130009E1804 /* PanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,11 +82,13 @@
 			isa = PBXGroup;
 			children = (
 				93A3C07D2018FD8C009E1804 /* AppDelegate.swift */,
-				93A3C07F2018FD8C009E1804 /* ViewController.swift */,
-				93A3C0812018FD8C009E1804 /* Main.storyboard */,
 				93A3C0842018FD8C009E1804 /* Assets.xcassets */,
-				93A3C0862018FD8C009E1804 /* LaunchScreen.storyboard */,
 				93A3C0892018FD8C009E1804 /* Info.plist */,
+				93A3C0862018FD8C009E1804 /* LaunchScreen.storyboard */,
+				93A3C09D2018FF30009E1804 /* Library */,
+				93A3C0812018FD8C009E1804 /* Main.storyboard */,
+				93A3C0A020190130009E1804 /* PanelViewController.swift */,
+				93A3C07F2018FD8C009E1804 /* ViewController.swift */,
 			);
 			path = PanelViewController;
 			sourceTree = "<group>";
@@ -94,6 +100,14 @@
 				93A3C0942018FD8C009E1804 /* Info.plist */,
 			);
 			path = PanelViewControllerTests;
+			sourceTree = "<group>";
+		};
+		93A3C09D2018FF30009E1804 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,6 +215,8 @@
 			files = (
 				93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */,
 				93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */,
+				93A3C09F2018FF30009E1804 /* UIViewController+Parenting.swift in Sources */,
+				93A3C0A120190130009E1804 /* PanelViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
