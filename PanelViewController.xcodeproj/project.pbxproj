@@ -18,6 +18,7 @@
 		93A3C0A320190389009E1804 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A220190389009E1804 /* MapViewController.swift */; };
 		93A3C0A520190397009E1804 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A420190397009E1804 /* ListViewController.swift */; };
 		93A3C0A7201906C9009E1804 /* PaneBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A6201906C9009E1804 /* PaneBehavior.swift */; };
+		93A3C0A920191653009E1804 /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A820191653009E1804 /* DraggableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		93A3C0A220190389009E1804 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		93A3C0A420190397009E1804 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		93A3C0A6201906C9009E1804 /* PaneBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneBehavior.swift; sourceTree = "<group>"; };
+		93A3C0A820191653009E1804 /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			children = (
 				93A3C07D2018FD8C009E1804 /* AppDelegate.swift */,
 				93A3C0842018FD8C009E1804 /* Assets.xcassets */,
+				93A3C0A820191653009E1804 /* DraggableView.swift */,
 				93A3C0892018FD8C009E1804 /* Info.plist */,
 				93A3C0862018FD8C009E1804 /* LaunchScreen.storyboard */,
 				93A3C09D2018FF30009E1804 /* Library */,
@@ -224,6 +227,7 @@
 			files = (
 				93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */,
 				93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */,
+				93A3C0A920191653009E1804 /* DraggableView.swift in Sources */,
 				93A3C0A520190397009E1804 /* ListViewController.swift in Sources */,
 				93A3C09F2018FF30009E1804 /* UIViewController+Parenting.swift in Sources */,
 				93A3C0A7201906C9009E1804 /* PaneBehavior.swift in Sources */,
