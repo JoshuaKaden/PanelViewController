@@ -9,6 +9,21 @@
 import UIKit
 
 class PanelViewController: UIViewController {
+    
+    private let mainViewController: UIViewController
+    private let panelViewController: UIViewController
+    
+    init(mainViewController: UIViewController, panelViewController: UIViewController) {
+        self.mainViewController = mainViewController
+        self.panelViewController = panelViewController
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        // Currently, not able to invoke via a storyboard.
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .blue

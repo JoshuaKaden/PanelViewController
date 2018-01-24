@@ -24,7 +24,6 @@ final class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         startButton.frame = view.bounds
-        startButton.center = view.center
     }
     
     @objc func didTapStart(_ sender: UIButton) {
@@ -33,6 +32,8 @@ final class ViewController: UIViewController {
     }
     
     private func buildPanelViewController() -> PanelViewController {
-        return PanelViewController()
+        let mapVC = MapViewController()
+        let listVC = ListViewController()
+        return PanelViewController(mainViewController: mapVC, panelViewController: listVC)
     }
 }
