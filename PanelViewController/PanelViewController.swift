@@ -8,23 +8,28 @@
 
 import UIKit
 
-enum PaneState { case closed, open }
+enum PaneState {
+    case closed, open
+}
 
 class PanelViewController: UIViewController {
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
+    var closedHeight = CGFloat(55)
     private var isFirstLayout = true
     private let mainViewController: UIViewController
+    var openTopMargin = CGFloat(55)
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
     private let panelViewController: UIViewController
     private(set) var paneState = PaneState.closed
     private let paneView = DraggableView()
+    
     private var targetPoint: CGPoint {
         let size = view.bounds.size
         if paneState == .closed {
-            return CGPoint(x: size.width / 2, y: size.height * 1.25)
+            return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight))
         }
-        return CGPoint(x: size.width / 2, y: size.height / 2 + 50)
+        return CGPoint(x: size.width / 2, y: size.height / 2 + openTopMargin)
     }
     
     init(mainViewController: UIViewController, panelViewController: UIViewController) {
@@ -64,11 +69,11 @@ class PanelViewController: UIViewController {
         if isFirstLayout {
             isFirstLayout = false
             let size = view.bounds.size
-            paneView.frame = CGRect(x: 0, y: size.height * 0.75, width: size.width, height: size.height)
+            paneView.frame = CGRect(x: 0, y: size.height - closedHeight, width: size.width, height: size.height - openTopMargin)
         }
         
         mainViewController.view.frame = view.bounds
-        panelViewController.view.frame = CGRect(x: 0, y: 88, width: paneView.bounds.size.width, height: paneView.bounds.size.height - 88)
+        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.size.width, height: paneView.bounds.size.height - closedHeight)
     }
     
     @objc func didTap(_ recognizer: UITapGestureRecognizer) {
