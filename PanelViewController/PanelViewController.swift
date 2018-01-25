@@ -14,11 +14,16 @@ enum PaneState {
 
 class PanelViewController: UIViewController {
     
-    private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
+    // MARK: - Public Properties
+    
     var closedHeight = CGFloat(55)
+    var openTopMargin = CGFloat(55)
+
+    // MARK: - Private Properties
+    
+    private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
     private var isFirstLayout = true
     private let mainViewController: UIViewController
-    var openTopMargin = CGFloat(55)
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
     private let panelViewController: UIViewController
     private(set) var paneState = PaneState.closed
@@ -31,6 +36,8 @@ class PanelViewController: UIViewController {
         }
         return CGPoint(x: size.width / 2, y: size.height / 2 + openTopMargin)
     }
+    
+    // MARK: - Lifecycle
     
     init(mainViewController: UIViewController, panelViewController: UIViewController) {
         self.mainViewController = mainViewController
@@ -63,6 +70,8 @@ class PanelViewController: UIViewController {
         view.addGestureRecognizer(recognizer)
     }
     
+    // MARK: - Layout
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -76,6 +85,8 @@ class PanelViewController: UIViewController {
         panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.size.width, height: paneView.bounds.size.height - closedHeight)
     }
     
+    // MARK: - Actions
+    
     @objc func didTap(_ recognizer: UITapGestureRecognizer) {
         if paneState == .closed {
             paneState = .open
@@ -85,12 +96,16 @@ class PanelViewController: UIViewController {
         animatePane(velocity: paneBehavior.velocity)
     }
     
+    // MARK: - Private
+    
     fileprivate func animatePane(velocity: CGPoint) {
         paneBehavior.targetPoint = targetPoint
         paneBehavior.velocity = velocity
         animator.addBehavior(paneBehavior)
     }
 }
+
+// MARK: - DraggableViewDelegate
 
 extension PanelViewController: DraggableViewDelegate {
     
