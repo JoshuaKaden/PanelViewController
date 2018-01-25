@@ -16,8 +16,8 @@ class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    var closedHeight = CGFloat(55)
-    var openTopMargin = CGFloat(55)
+    var closedHeight = CGFloat(60)
+    var openTopMargin = CGFloat(90)
 
     // MARK: - Private Properties
     
@@ -28,13 +28,14 @@ class PanelViewController: UIViewController {
     private let panelViewController: UIViewController
     private(set) var paneState = PaneState.closed
     private let paneView = DraggableView()
-    
+    private let stretchAllowance = CGFloat(150)
+
     private var targetPoint: CGPoint {
         let size = view.bounds.size
         if paneState == .closed {
             return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight))
         }
-        return CGPoint(x: size.width / 2, y: size.height / 2 + openTopMargin)
+        return CGPoint(x: size.width / 2, y: (paneView.bounds.size.height / 2) + openTopMargin)
     }
     
     // MARK: - Lifecycle
@@ -78,11 +79,11 @@ class PanelViewController: UIViewController {
         if isFirstLayout {
             isFirstLayout = false
             let size = view.bounds.size
-            paneView.frame = CGRect(x: 0, y: size.height - closedHeight, width: size.width, height: size.height - openTopMargin)
+            paneView.frame = CGRect(x: 0, y: size.height - closedHeight, width: size.width, height: (size.height + stretchAllowance) - openTopMargin)
         }
         
         mainViewController.view.frame = view.bounds
-        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.size.width, height: paneView.bounds.size.height - closedHeight)
+        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.size.width, height: paneView.bounds.size.height - closedHeight - stretchAllowance)
     }
     
     // MARK: - Actions
