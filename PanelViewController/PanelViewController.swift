@@ -8,9 +8,18 @@
 
 import UIKit
 
-enum PaneState { case closed, open }
+enum PaneState {
+    case closed, open
+}
 
 class PanelViewController: UIViewController {
+    
+    // MARK: - Public Properties
+    
+    var closedHeight = CGFloat(60)
+    var openTopMargin = CGFloat(90)
+
+    // MARK: - Private Properties
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
     private var isFirstLayout = true
@@ -19,13 +28,17 @@ class PanelViewController: UIViewController {
     private let panelViewController: UIViewController
     private(set) var paneState = PaneState.closed
     private let paneView = DraggableView()
+    private let stretchAllowance = CGFloat(150)
+
     private var targetPoint: CGPoint {
         let size = view.bounds.size
         if paneState == .closed {
-            return CGPoint(x: size.width / 2, y: size.height * 1.25)
+            return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight))
         }
-        return CGPoint(x: size.width / 2, y: size.height / 2 + 50)
+        return CGPoint(x: size.width / 2, y: (paneView.bounds.size.height / 2) + openTopMargin)
     }
+    
+    // MARK: - Lifecycle
     
     init(mainViewController: UIViewController, panelViewController: UIViewController) {
         self.mainViewController = mainViewController
@@ -36,6 +49,11 @@ class PanelViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         // Currently, not able to invoke via a storyboard.
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        mainViewController.leaveParentViewController()
+        panelViewController.leaveParentViewController()
     }
     
     override func viewDidLoad() {
@@ -53,18 +71,22 @@ class PanelViewController: UIViewController {
         view.addGestureRecognizer(recognizer)
     }
     
+    // MARK: - Layout
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         if isFirstLayout {
             isFirstLayout = false
             let size = view.bounds.size
-            paneView.frame = CGRect(x: 0, y: size.height * 0.75, width: size.width, height: size.height)
+            paneView.frame = CGRect(x: 0, y: size.height - closedHeight, width: size.width, height: (size.height + stretchAllowance) - openTopMargin)
         }
         
         mainViewController.view.frame = view.bounds
-        panelViewController.view.frame = CGRect(x: 0, y: 88, width: paneView.bounds.size.width, height: paneView.bounds.size.height - 88)
+        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.size.width, height: paneView.bounds.size.height - closedHeight - stretchAllowance)
     }
+    
+    // MARK: - Actions
     
     @objc func didTap(_ recognizer: UITapGestureRecognizer) {
         if paneState == .closed {
@@ -75,12 +97,16 @@ class PanelViewController: UIViewController {
         animatePane(velocity: paneBehavior.velocity)
     }
     
+    // MARK: - Private
+    
     fileprivate func animatePane(velocity: CGPoint) {
         paneBehavior.targetPoint = targetPoint
         paneBehavior.velocity = velocity
         animator.addBehavior(paneBehavior)
     }
 }
+
+// MARK: - DraggableViewDelegate
 
 extension PanelViewController: DraggableViewDelegate {
     
