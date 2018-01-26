@@ -9,7 +9,7 @@
 import UIKit
 
 enum PaneState {
-    case closed, open
+    case closed, mid, open
 }
 
 class PanelViewController: UIViewController {
@@ -17,6 +17,7 @@ class PanelViewController: UIViewController {
     // MARK: - Public Properties
     
     var closedHeight = CGFloat(60)
+    var midY: CGFloat?
     var openTopMargin = CGFloat(90)
 
     // MARK: - Private Properties
@@ -32,10 +33,20 @@ class PanelViewController: UIViewController {
 
     private var targetPoint: CGPoint {
         let size = view.bounds.size
-        if paneState == .closed {
+        switch paneState {
+        case .closed:
             return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight))
+        case .mid:
+            let y: CGFloat
+            if let midY = midY {
+                y = midY
+            } else {
+                y = view.bounds.height / 2
+            }
+            return CGPoint(x: size.width / 2, y: (paneView.bounds.size.height / 2) + y)
+        case .open:
+            return CGPoint(x: size.width / 2, y: (paneView.bounds.size.height / 2) + openTopMargin)
         }
-        return CGPoint(x: size.width / 2, y: (paneView.bounds.size.height / 2) + openTopMargin)
     }
     
     // MARK: - Lifecycle
@@ -66,9 +77,6 @@ class PanelViewController: UIViewController {
         paneView.delegate = self
         paneView.layer.cornerRadius = 8
         view.addSubview(paneView)
-        
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
-        view.addGestureRecognizer(recognizer)
     }
     
     // MARK: - Layout
@@ -86,23 +94,31 @@ class PanelViewController: UIViewController {
         panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.size.width, height: paneView.bounds.size.height - closedHeight - stretchAllowance)
     }
     
-    // MARK: - Actions
-    
-    @objc func didTap(_ recognizer: UITapGestureRecognizer) {
-        if paneState == .closed {
-            paneState = .open
-        } else {
-            paneState = .closed
-        }
-        animatePane(velocity: paneBehavior.velocity)
-    }
-    
     // MARK: - Private
     
     fileprivate func animatePane(velocity: CGPoint) {
         paneBehavior.targetPoint = targetPoint
         paneBehavior.velocity = velocity
         animator.addBehavior(paneBehavior)
+        
+        updatePanelViewHeight()
+    }
+    
+    private func calculatePaneViewHeight(state: PaneState) -> CGFloat {
+        let paneViewHeight: CGFloat
+        let size = view.bounds.size
+        switch paneState {
+        case .closed, .open:
+            paneViewHeight = (size.height + stretchAllowance) - openTopMargin
+        case .mid:
+            paneViewHeight = ((midY ?? size.height / 2) + stretchAllowance)
+        }
+        return paneViewHeight
+    }
+    
+    private func updatePanelViewHeight(paneViewHeight: CGFloat? = nil) {
+        let superHeight = paneViewHeight ?? calculatePaneViewHeight(state: paneState)
+        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: superHeight - closedHeight - stretchAllowance)
     }
 }
 
@@ -112,13 +128,32 @@ extension PanelViewController: DraggableViewDelegate {
     
     func draggingBegan(view: DraggableView) {
         animator.removeAllBehaviors()
+        
+        let paneViewHeight = calculatePaneViewHeight(state: .open)
+        self.updatePanelViewHeight(paneViewHeight: paneViewHeight)
     }
     
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
         if velocity.y >= 0 {
-            paneState = .closed
+            switch paneState {
+            case .closed:
+                // no op
+                break
+            case .mid:
+                paneState = .closed
+            case .open:
+                paneState = .mid
+            }
         } else {
-            paneState = .open
+            switch paneState {
+            case .closed:
+                paneState = .mid
+            case .mid:
+                paneState = .open
+            case .open:
+                // no op
+                break
+            }
         }
         animatePane(velocity: velocity)
     }
