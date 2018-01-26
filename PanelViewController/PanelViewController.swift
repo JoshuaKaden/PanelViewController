@@ -28,7 +28,7 @@ class PanelViewController: UIViewController {
     private let panelViewController: UIViewController
     private(set) var paneState = PaneState.closed
     private let paneView = DraggableView()
-    private let stretchAllowance = CGFloat(150)
+    private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
 
     private var targetPoint: CGPoint {
         let size = view.bounds.size

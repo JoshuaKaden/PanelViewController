@@ -34,6 +34,10 @@ final class ViewController: UIViewController {
     private func buildPanelViewController() -> PanelViewController {
         let mapVC = MapViewController()
         let listVC = ListViewController()
-        return PanelViewController(mainViewController: mapVC, panelViewController: listVC)
+        
+        let vc = PanelViewController(mainViewController: mapVC, panelViewController: listVC)
+//        vc.closedHeight = 66
+//        vc.openTopMargin = view.bounds.height / 2
+        return vc
     }
 }
