@@ -17,12 +17,13 @@ class PanelViewController: UIViewController {
     // MARK: - Public Properties
     
     var closedHeight = CGFloat(60)
-    var midY: CGFloat?
+    var midTopMargin: CGFloat?
     var openTopMargin = CGFloat(90)
 
     // MARK: - Private Properties
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
+    fileprivate var isDragging = false
     private var isFirstLayout = true
     private let mainViewController: UIViewController
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
@@ -38,8 +39,8 @@ class PanelViewController: UIViewController {
             return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight))
         case .mid:
             let y: CGFloat
-            if let midY = midY {
-                y = midY
+            if let midTopMargin = midTopMargin {
+                y = midTopMargin
             } else {
                 y = view.bounds.height / 2
             }
@@ -91,7 +92,7 @@ class PanelViewController: UIViewController {
         }
         
         mainViewController.view.frame = view.bounds
-        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.size.width, height: paneView.bounds.size.height - closedHeight - stretchAllowance)
+        updatePanelViewHeight()
     }
     
     // MARK: - Private
@@ -101,24 +102,36 @@ class PanelViewController: UIViewController {
         paneBehavior.velocity = velocity
         animator.addBehavior(paneBehavior)
         
-        updatePanelViewHeight()
+        delay(0.1) {
+            [weak self] in
+            self?.updatePanelViewHeight()
+        }
     }
     
-    private func calculatePaneViewHeight(state: PaneState) -> CGFloat {
-        let paneViewHeight: CGFloat
+    private func calculatePanelViewHeight(state: PaneState) -> CGFloat {
+        let panelViewHeight: CGFloat
         let size = view.bounds.size
         switch paneState {
         case .closed, .open:
-            paneViewHeight = (size.height + stretchAllowance) - openTopMargin
+            panelViewHeight = (size.height + stretchAllowance) - openTopMargin
         case .mid:
-            paneViewHeight = ((midY ?? size.height / 2) + stretchAllowance)
+            if let midTopMargin = midTopMargin {
+                panelViewHeight = (size.height - midTopMargin) + stretchAllowance
+            } else {
+                panelViewHeight = (size.height / 2) + stretchAllowance
+            }
         }
-        return paneViewHeight
+        return panelViewHeight
     }
     
-    private func updatePanelViewHeight(paneViewHeight: CGFloat? = nil) {
-        let superHeight = paneViewHeight ?? calculatePaneViewHeight(state: paneState)
-        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: superHeight - closedHeight - stretchAllowance)
+    private func updatePanelViewHeight() {
+        let panelHeight: CGFloat
+        if isDragging {
+            panelHeight = calculatePanelViewHeight(state: .open)
+        } else {
+            panelHeight = calculatePanelViewHeight(state: paneState)
+        }
+        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: panelHeight - closedHeight - stretchAllowance)
     }
 }
 
@@ -128,9 +141,8 @@ extension PanelViewController: DraggableViewDelegate {
     
     func draggingBegan(view: DraggableView) {
         animator.removeAllBehaviors()
-        
-        let paneViewHeight = calculatePaneViewHeight(state: .open)
-        self.updatePanelViewHeight(paneViewHeight: paneViewHeight)
+        isDragging = true
+        updatePanelViewHeight()
     }
     
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
@@ -156,5 +168,6 @@ extension PanelViewController: DraggableViewDelegate {
             }
         }
         animatePane(velocity: velocity)
+        isDragging = false
     }
 }
