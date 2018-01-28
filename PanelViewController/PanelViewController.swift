@@ -19,6 +19,7 @@ class PanelViewController: UIViewController {
     var closedHeight = CGFloat(60)
     var midTopMargin: CGFloat?
     var openTopMargin = CGFloat(90)
+    var showsMidState = true
 
     // MARK: - Private Properties
     
@@ -133,19 +134,8 @@ class PanelViewController: UIViewController {
         }
         panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: panelHeight - closedHeight - stretchAllowance)
     }
-}
-
-// MARK: - DraggableViewDelegate
-
-extension PanelViewController: DraggableViewDelegate {
     
-    func draggingBegan(view: DraggableView) {
-        animator.removeAllBehaviors()
-        isDragging = true
-        updatePanelViewHeight()
-    }
-    
-    func draggingEnded(view: DraggableView, velocity: CGPoint) {
+    fileprivate func updatePaneState(velocity: CGPoint) {
         if velocity.y >= 0 {
             switch paneState {
             case .closed:
@@ -167,6 +157,30 @@ extension PanelViewController: DraggableViewDelegate {
                 break
             }
         }
+    }
+}
+
+// MARK: - DraggableViewDelegate
+
+extension PanelViewController: DraggableViewDelegate {
+    
+    func draggingBegan(view: DraggableView) {
+        animator.removeAllBehaviors()
+        isDragging = true
+        updatePanelViewHeight()
+    }
+    
+    func draggingEnded(view: DraggableView, velocity: CGPoint) {
+        if showsMidState {
+            updatePaneState(velocity: velocity)
+        } else {
+            if paneState == .open {
+                paneState = .closed
+            } else {
+                paneState = .open
+            }
+        }
+        
         animatePane(velocity: velocity)
         isDragging = false
     }
