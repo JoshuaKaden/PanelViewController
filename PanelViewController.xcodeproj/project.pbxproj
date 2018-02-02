@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B54AE201D3EDE00576911 /* Utility-Delay.swift */; };
 		93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07D2018FD8C009E1804 /* AppDelegate.swift */; };
 		93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07F2018FD8C009E1804 /* ViewController.swift */; };
 		93A3C0832018FD8C009E1804 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93A3C0812018FD8C009E1804 /* Main.storyboard */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		774B54AE201D3EDE00576911 /* Utility-Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility-Delay.swift"; sourceTree = "<group>"; };
 		93A3C07A2018FD8C009E1804 /* PanelViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PanelViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A3C07D2018FD8C009E1804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93A3C07F2018FD8C009E1804 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */,
+				774B54AE201D3EDE00576911 /* Utility-Delay.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */,
 				93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */,
 				93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */,
 				93A3C0A920191653009E1804 /* DraggableView.swift in Sources */,
@@ -386,7 +390,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E5LW2CH45C;
+				DEVELOPMENT_TEAM = NF2C9YRD83;
 				INFOPLIST_FILE = PanelViewController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -402,7 +406,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E5LW2CH45C;
+				DEVELOPMENT_TEAM = NF2C9YRD83;
 				INFOPLIST_FILE = PanelViewController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
