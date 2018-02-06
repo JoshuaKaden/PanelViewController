@@ -39,6 +39,7 @@ class PanelViewController: UIViewController {
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
     private let panelViewController: UIViewController
     private(set) var paneState = PaneState.closed
+    private var previousPaneState = PaneState.closed
     private let paneView = DraggableView()
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
 
@@ -81,12 +82,9 @@ class PanelViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        adoptChildViewController(mainViewController)
-        adoptChildViewController(panelViewController, targetView: paneView)
-        
-        if paneView.backgroundColor == nil {
-            paneView.backgroundColor = .lightGray
-        }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPaneView(_:)))
+        paneView.addGestureRecognizer(tap)
+        paneView.backgroundColor = .lightGray
         paneView.delegate = self
         paneView.layer.cornerRadius = 8
         view.addSubview(paneView)
@@ -96,6 +94,11 @@ class PanelViewController: UIViewController {
         }
         dragHandleView.layer.cornerRadius = 3
         paneView.addSubview(dragHandleView)
+		
+        adoptChildViewController(mainViewController)
+        adoptChildViewController(panelViewController, targetView: paneView)
+        
+        view.bringSubview(toFront: paneView)
     }
     
     // MARK: - Layout
@@ -114,6 +117,30 @@ class PanelViewController: UIViewController {
         
         let dragHandleWidth = CGFloat(44)
         dragHandleView.frame = CGRect(x: (paneView.bounds.width / 2) - (dragHandleWidth / 2), y: 8, width: dragHandleWidth, height: 5)
+    }
+    
+    // MARK: - Handlers
+    
+    @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
+        if showsMidState {
+            let directionY: CGFloat
+            switch previousPaneState {
+            case .closed:
+                directionY = -1
+            case .mid:
+                if paneState == .closed {
+                    directionY = -1
+                } else {
+                    directionY = 1
+                }
+            case .open:
+                directionY = 1
+            }
+            let velocity = CGPoint(x: 0, y: directionY)
+            performStateChange(velocity: velocity)
+            return
+        }
+        performStateChange(velocity: paneBehavior.velocity)
     }
     
     // MARK: - Private
@@ -145,6 +172,23 @@ class PanelViewController: UIViewController {
         return panelViewHeight
     }
     
+    fileprivate func performStateChange(velocity: CGPoint) {
+        if showsMidState {
+            updatePaneState(velocity: velocity)
+        } else {
+            togglePaneState()
+        }
+        animatePane(velocity: velocity)
+    }
+    
+    private func togglePaneState() {
+        if paneState == .open {
+            paneState = .closed
+        } else {
+            paneState = .open
+        }
+    }
+    
     private func updatePanelViewHeight() {
         let panelHeight: CGFloat
         if isDragging {
@@ -156,6 +200,8 @@ class PanelViewController: UIViewController {
     }
     
     fileprivate func updatePaneState(velocity: CGPoint) {
+        previousPaneState = paneState
+        
         if velocity.y >= 0 {
             switch paneState {
             case .closed:
@@ -166,16 +212,17 @@ class PanelViewController: UIViewController {
             case .open:
                 paneState = .mid
             }
-        } else {
-            switch paneState {
-            case .closed:
-                paneState = .mid
-            case .mid:
-                paneState = .open
-            case .open:
-                // no op
-                break
-            }
+            return
+        }
+        
+        switch paneState {
+        case .closed:
+            paneState = .mid
+        case .mid:
+            paneState = .open
+        case .open:
+            // no op
+            break
         }
     }
 }
@@ -191,17 +238,7 @@ extension PanelViewController: DraggableViewDelegate {
     }
     
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
-        if showsMidState {
-            updatePaneState(velocity: velocity)
-        } else {
-            if paneState == .open {
-                paneState = .closed
-            } else {
-                paneState = .open
-            }
-        }
-        
-        animatePane(velocity: velocity)
+        performStateChange(velocity: velocity)
         isDragging = false
     }
 }
