@@ -173,15 +173,15 @@ class PanelViewController: UIViewController {
     }
     
     fileprivate func performStateChange(velocity: CGPoint) {
-        if showsMidState {
-            updatePaneState(velocity: velocity)
-        } else {
-            togglePaneState()
-        }
+        togglePaneState(velocity: velocity)
         animatePane(velocity: velocity)
     }
     
-    private func togglePaneState() {
+    private func togglePaneState(velocity: CGPoint) {
+        if showsMidState {
+            updatePaneState(velocity: velocity)
+            return
+        }
         if paneState == .open {
             paneState = .closed
         } else {
