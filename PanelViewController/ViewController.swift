@@ -19,55 +19,11 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let closedHeightLabel = UILabel()
-        closedHeightLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        closedHeightLabel.frame = CGRect(x: 0, y: 0, width: 120, height: 44)
-        closedHeightLabel.text = NSLocalizedString("Closed height:", comment: "")
-        
-        closedHeightTextField.delegate = self
-        closedHeightTextField.leftView = closedHeightLabel
-        closedHeightTextField.leftViewMode = .always
-        closedHeightTextField.returnKeyType = .done
-        closedHeightTextField.text = String(describing: PanelViewController.defaultClosedHeight)
-        stackView.addArrangedSubview(closedHeightTextField)
-
-        let openTopMarginLabel = UILabel()
-        openTopMarginLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        openTopMarginLabel.frame = CGRect(x: 0, y: 0, width: 120, height: 44)
-        openTopMarginLabel.text = NSLocalizedString("Open top margin:", comment: "")
-        
-        openTopMarginTextField.delegate = self
-        openTopMarginTextField.leftView = openTopMarginLabel
-        openTopMarginTextField.leftViewMode = .always
-        openTopMarginTextField.returnKeyType = .done
-        openTopMarginTextField.text = String(describing: PanelViewController.defaultOpenTopMargin)
-        stackView.addArrangedSubview(openTopMarginTextField)
-        
-        let showsMidStateLabel = UILabel()
-        showsMidStateLabel.text = NSLocalizedString("Shows mid state:", comment: "")
-        showsMidStateLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        stackView.addArrangedSubview(showsMidStateLabel)
-        
-        showsMidStateSwitch.isOn = false
-        stackView.addArrangedSubview(showsMidStateSwitch)
-        
-        let midTopMarginLabel = UILabel()
-        midTopMarginLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        midTopMarginLabel.frame = CGRect(x: 0, y: 0, width: 120, height: 44)
-        midTopMarginLabel.text = NSLocalizedString("Mid top margin:", comment: "")
-        
-        midTopMarginTextField.delegate = self
-        midTopMarginTextField.leftView = midTopMarginLabel
-        midTopMarginTextField.leftViewMode = .always
-        midTopMarginTextField.placeholder = NSLocalizedString("1/2 superview height", comment: "")
-        midTopMarginTextField.returnKeyType = .done
-        stackView.addArrangedSubview(midTopMarginTextField)
-        
-        let startButton = UIButton()
-        startButton.addTarget(self, action: #selector(didTapStart(_:)), for: .touchUpInside)
-        startButton.setTitle(NSLocalizedString("Start", comment: ""), for: .normal)
-        startButton.setTitleColor(.blue, for: .normal)
-        stackView.addArrangedSubview(startButton)
+        add(textField: closedHeightTextField, text: String(describing: PanelViewController.defaultClosedHeight), title: NSLocalizedString("Closed height:", comment: ""))
+        add(textField: openTopMarginTextField, text: String(describing: PanelViewController.defaultOpenTopMargin), title: NSLocalizedString("Open top margin:", comment: ""))
+        addMidStateControls()
+        add(textField: midTopMarginTextField, title: NSLocalizedString("Mid top margin:", comment: ""), placeholder: NSLocalizedString("1/2 superview height", comment: ""))
+        addStartButton()
         
         stackView.axis = .vertical
         stackView.distribution = .equalCentering
@@ -85,6 +41,39 @@ final class ViewController: UIViewController {
         view.endEditing(true)
         let vc = buildPanelViewController()
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func add(textField: UITextField, text: String? = nil, title: String, placeholder: String? = nil) {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        label.frame = CGRect(x: 0, y: 0, width: 120, height: 44)
+        label.text = title
+        
+        textField.delegate = self
+        textField.leftView = label
+        textField.leftViewMode = .always
+        textField.placeholder = placeholder
+        textField.returnKeyType = .done
+        textField.text = text
+        stackView.addArrangedSubview(textField)
+    }
+    
+    private func addMidStateControls() {
+        let showsMidStateLabel = UILabel()
+        showsMidStateLabel.text = NSLocalizedString("Shows mid state:", comment: "")
+        showsMidStateLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        stackView.addArrangedSubview(showsMidStateLabel)
+        
+        showsMidStateSwitch.isOn = false
+        stackView.addArrangedSubview(showsMidStateSwitch)
+    }
+    
+    private func addStartButton() {
+        let startButton = UIButton()
+        startButton.addTarget(self, action: #selector(didTapStart(_:)), for: .touchUpInside)
+        startButton.setTitle(NSLocalizedString("Start", comment: ""), for: .normal)
+        startButton.setTitleColor(.blue, for: .normal)
+        stackView.addArrangedSubview(startButton)
     }
     
     private func buildPanelViewController() -> PanelViewController {
