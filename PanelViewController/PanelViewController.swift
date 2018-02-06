@@ -16,9 +16,9 @@ class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    var closedHeight = CGFloat(60)
+    var closedHeight = PanelViewController.defaultClosedHeight
     var midTopMargin: CGFloat?
-    var openTopMargin = CGFloat(90)
+	var openTopMargin = PanelViewController.defaultOpenTopMargin
     var panelBackgroundColor: UIColor? {
         get { return paneView.backgroundColor }
         set { paneView.backgroundColor = newValue }
@@ -29,6 +29,11 @@ class PanelViewController: UIViewController {
     }
     var showsMidState = true
 
+    // MARK: - Public Static Properties
+    
+    static let defaultClosedHeight = CGFloat(60)
+    static let defaultOpenTopMargin = CGFloat(90)
+    
     // MARK: - Private Properties
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
