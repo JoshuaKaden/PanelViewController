@@ -19,11 +19,20 @@ class PanelViewController: UIViewController {
     var closedHeight = CGFloat(60)
     var midTopMargin: CGFloat?
     var openTopMargin = CGFloat(90)
+    var panelBackgroundColor: UIColor? {
+        get { return paneView.backgroundColor }
+        set { paneView.backgroundColor = newValue }
+    }
+    var panelHandleColor: UIColor? {
+        get { return dragHandleView.backgroundColor }
+        set { dragHandleView.backgroundColor = newValue }
+    }
     var showsMidState = true
 
     // MARK: - Private Properties
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
+    private let dragHandleView = UIView()
     fileprivate var isDragging = false
     private var isFirstLayout = true
     private let mainViewController: UIViewController
@@ -75,10 +84,18 @@ class PanelViewController: UIViewController {
         adoptChildViewController(mainViewController)
         adoptChildViewController(panelViewController, targetView: paneView)
         
-        paneView.backgroundColor = .lightGray
+        if paneView.backgroundColor == nil {
+            paneView.backgroundColor = .lightGray
+        }
         paneView.delegate = self
         paneView.layer.cornerRadius = 8
         view.addSubview(paneView)
+        
+        if dragHandleView.backgroundColor == nil {
+            dragHandleView.backgroundColor = .darkGray
+        }
+        dragHandleView.layer.cornerRadius = 3
+        paneView.addSubview(dragHandleView)
     }
     
     // MARK: - Layout
@@ -94,6 +111,9 @@ class PanelViewController: UIViewController {
         
         mainViewController.view.frame = view.bounds
         updatePanelViewHeight()
+        
+        let dragHandleWidth = CGFloat(44)
+        dragHandleView.frame = CGRect(x: (paneView.bounds.width / 2) - (dragHandleWidth / 2), y: 8, width: dragHandleWidth, height: 5)
     }
     
     // MARK: - Private
