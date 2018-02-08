@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B54AE201D3EDE00576911 /* Utility-Delay.swift */; };
+		934577B22029FF7100D9044C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 934577B12029FF7100D9044C /* README.md */; };
 		93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07D2018FD8C009E1804 /* AppDelegate.swift */; };
 		93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07F2018FD8C009E1804 /* ViewController.swift */; };
 		93A3C0832018FD8C009E1804 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93A3C0812018FD8C009E1804 /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		774B54AE201D3EDE00576911 /* Utility-Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility-Delay.swift"; sourceTree = "<group>"; };
+		934577B12029FF7100D9044C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		93A3C07A2018FD8C009E1804 /* PanelViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PanelViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A3C07D2018FD8C009E1804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93A3C07F2018FD8C009E1804 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 		93A3C0712018FD8C009E1804 = {
 			isa = PBXGroup;
 			children = (
+				934577B12029FF7100D9044C /* README.md */,
 				93A3C07C2018FD8C009E1804 /* PanelViewController */,
 				93A3C0912018FD8C009E1804 /* PanelViewControllerTests */,
 				93A3C07B2018FD8C009E1804 /* Products */,
@@ -210,6 +213,7 @@
 			files = (
 				93A3C0882018FD8C009E1804 /* LaunchScreen.storyboard in Resources */,
 				93A3C0852018FD8C009E1804 /* Assets.xcassets in Resources */,
+				934577B22029FF7100D9044C /* README.md in Resources */,
 				93A3C0832018FD8C009E1804 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
