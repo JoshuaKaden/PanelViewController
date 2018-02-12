@@ -14,6 +14,7 @@ final class ViewController: UIViewController {
     private let midTopMarginTextField = UITextField()
     private let openTopMarginTextField = UITextField()
     private let showsMidStateSwitch = UISwitch()
+    private let containerizeSwitch = UISwitch()
     private let stackView = UIStackView()
     
     override func viewDidLoad() {
@@ -23,6 +24,7 @@ final class ViewController: UIViewController {
         add(textField: openTopMarginTextField, text: String(describing: PanelViewController.defaultOpenTopMargin), title: NSLocalizedString("Open top margin:", comment: ""))
         addMidStateControls()
         add(textField: midTopMarginTextField, title: NSLocalizedString("Mid top margin:", comment: ""), placeholder: NSLocalizedString("1/2 superview height", comment: ""))
+        addContainerizeControls()
         addStartButton()
         
         stackView.axis = .vertical
@@ -39,7 +41,16 @@ final class ViewController: UIViewController {
     
     @objc func didTapStart(_ sender: UIButton) {
         view.endEditing(true)
-        let vc = buildPanelViewController()
+        
+        let panelVC = buildPanelViewController()
+        
+        let vc: UIViewController
+        if containerizeSwitch.isOn {
+            vc = ContainerViewController(panelViewController: panelVC)
+        } else {
+            vc = panelVC
+        }
+        
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -56,6 +67,16 @@ final class ViewController: UIViewController {
         textField.returnKeyType = .done
         textField.text = text
         stackView.addArrangedSubview(textField)
+    }
+    
+    private func addContainerizeControls() {
+        let containerizeLabel = UILabel()
+        containerizeLabel.text = NSLocalizedString("Containerize:", comment: "")
+        containerizeLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        stackView.addArrangedSubview(containerizeLabel)
+        
+        containerizeSwitch.isOn = false
+        stackView.addArrangedSubview(containerizeSwitch)
     }
     
     private func addMidStateControls() {

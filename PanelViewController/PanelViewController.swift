@@ -128,27 +128,40 @@ class PanelViewController: UIViewController {
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
         if showsMidState {
-            let directionY: CGFloat
-            switch previousPaneState {
-            case .closed:
-                directionY = -1
-            case .mid:
-                if paneState == .closed {
-                    directionY = -1
-                } else {
-                    directionY = 1
-                }
-            case .open:
-                directionY = 1
-            }
-            let velocity = CGPoint(x: 0, y: directionY)
+            let velocity = calculateVelocity()
             performStateChange(velocity: velocity)
             return
         }
         performStateChange(velocity: paneBehavior.velocity)
     }
     
-    // MARK: - Private
+    // MARK: - Public Methods
+    
+    func changeState(to newState: PaneState, animated: Bool = true) {
+        if newState == .mid && !showsMidState {
+            return
+        }
+        previousPaneState = paneState
+        paneState = newState
+        if animated {
+            animatePane(velocity: calculateVelocity())
+        } else {
+            updatePanelViewHeight()
+            var frame = paneView.frame
+            switch newState {
+            case .closed:
+                frame.origin.y = view.frame.height - closedHeight
+            case .mid:
+                guard showsMidState else { return }
+                frame.origin.y = midTopMargin ?? view.bounds.height / 2
+            case .open:
+                frame.origin.y = openTopMargin
+            }
+            paneView.frame = frame
+        }
+    }
+    
+    // MARK: - Private Methods
     
     fileprivate func animatePane(velocity: CGPoint) {
         paneBehavior.targetPoint = targetPoint
@@ -175,6 +188,23 @@ class PanelViewController: UIViewController {
             }
         }
         return panelViewHeight
+    }
+    
+    private func calculateVelocity() -> CGPoint {
+        let directionY: CGFloat
+        switch previousPaneState {
+        case .closed:
+            directionY = -1
+        case .mid:
+            if paneState == .closed {
+                directionY = -1
+            } else {
+                directionY = 1
+            }
+        case .open:
+            directionY = 1
+        }
+        return CGPoint(x: 0, y: directionY)
     }
     
     fileprivate func performStateChange(velocity: CGPoint) {
