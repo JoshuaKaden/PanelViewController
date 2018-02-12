@@ -127,12 +127,13 @@ class PanelViewController: UIViewController {
     // MARK: - Handlers
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
+        let velocity: CGPoint
         if showsMidState {
-            let velocity = calculateVelocity()
-            performStateChange(velocity: velocity)
-            return
+            velocity = calculateVelocity()
+        } else {
+            velocity = paneBehavior.velocity
         }
-        performStateChange(velocity: paneBehavior.velocity)
+        performStateChange(velocity: velocity)
     }
     
     // MARK: - Public Methods
@@ -141,24 +142,26 @@ class PanelViewController: UIViewController {
         if newState == .mid && !showsMidState {
             return
         }
+        
         previousPaneState = paneState
         paneState = newState
         if animated {
             animatePane(velocity: calculateVelocity())
-        } else {
-            updatePanelViewHeight()
-            var frame = paneView.frame
-            switch newState {
-            case .closed:
-                frame.origin.y = view.frame.height - closedHeight
-            case .mid:
-                guard showsMidState else { return }
-                frame.origin.y = midTopMargin ?? view.bounds.height / 2
-            case .open:
-                frame.origin.y = openTopMargin
-            }
-            paneView.frame = frame
+            return
         }
+        
+        updatePanelViewHeight()
+        var frame = paneView.frame
+        switch newState {
+        case .closed:
+            frame.origin.y = view.frame.height - closedHeight
+        case .mid:
+            guard showsMidState else { return }
+            frame.origin.y = midTopMargin ?? view.bounds.height / 2
+        case .open:
+            frame.origin.y = openTopMargin
+        }
+        paneView.frame = frame
     }
     
     // MARK: - Private Methods
