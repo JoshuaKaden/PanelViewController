@@ -189,6 +189,7 @@ class PanelViewController: UIViewController {
         previousPaneState = paneState
         paneState = newState
         animatePane(velocity: calculateVelocity())
+        view.setNeedsLayout()
     }
     
     // MARK: - Private Methods
