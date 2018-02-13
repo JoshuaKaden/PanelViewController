@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B54AE201D3EDE00576911 /* Utility-Delay.swift */; };
+		934577B22029FF7100D9044C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 934577B12029FF7100D9044C /* README.md */; };
+		9377B88520322D7500ADCF5D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377B88420322D7500ADCF5D /* ContainerViewController.swift */; };
 		93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07D2018FD8C009E1804 /* AppDelegate.swift */; };
 		93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07F2018FD8C009E1804 /* ViewController.swift */; };
 		93A3C0832018FD8C009E1804 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93A3C0812018FD8C009E1804 /* Main.storyboard */; };
@@ -32,6 +35,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		774B54AE201D3EDE00576911 /* Utility-Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility-Delay.swift"; sourceTree = "<group>"; };
+		934577B12029FF7100D9044C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		9377B88420322D7500ADCF5D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		93A3C07A2018FD8C009E1804 /* PanelViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PanelViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A3C07D2018FD8C009E1804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93A3C07F2018FD8C009E1804 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -71,6 +77,7 @@
 		93A3C0712018FD8C009E1804 = {
 			isa = PBXGroup;
 			children = (
+				934577B12029FF7100D9044C /* README.md */,
 				93A3C07C2018FD8C009E1804 /* PanelViewController */,
 				93A3C0912018FD8C009E1804 /* PanelViewControllerTests */,
 				93A3C07B2018FD8C009E1804 /* Products */,
@@ -91,6 +98,7 @@
 			children = (
 				93A3C07D2018FD8C009E1804 /* AppDelegate.swift */,
 				93A3C0842018FD8C009E1804 /* Assets.xcassets */,
+				9377B88420322D7500ADCF5D /* ContainerViewController.swift */,
 				93A3C0A820191653009E1804 /* DraggableView.swift */,
 				93A3C0892018FD8C009E1804 /* Info.plist */,
 				93A3C0862018FD8C009E1804 /* LaunchScreen.storyboard */,
@@ -118,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */,
+				774B54AE201D3EDE00576911 /* Utility-Delay.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -207,6 +216,7 @@
 			files = (
 				93A3C0882018FD8C009E1804 /* LaunchScreen.storyboard in Resources */,
 				93A3C0852018FD8C009E1804 /* Assets.xcassets in Resources */,
+				934577B22029FF7100D9044C /* README.md in Resources */,
 				93A3C0832018FD8C009E1804 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,7 +235,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */,
 				93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */,
+				9377B88520322D7500ADCF5D /* ContainerViewController.swift in Sources */,
 				93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */,
 				93A3C0A920191653009E1804 /* DraggableView.swift in Sources */,
 				93A3C0A520190397009E1804 /* ListViewController.swift in Sources */,
@@ -388,6 +400,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E5LW2CH45C;
 				INFOPLIST_FILE = PanelViewController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gov.nyc.doitt.PanelViewController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -403,6 +416,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E5LW2CH45C;
 				INFOPLIST_FILE = PanelViewController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gov.nyc.doitt.PanelViewController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
