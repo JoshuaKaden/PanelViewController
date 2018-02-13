@@ -127,28 +127,28 @@ class PanelViewController: UIViewController {
     // MARK: - Handlers
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
+        let velocity: CGPoint
         if showsMidState {
-            let directionY: CGFloat
-            switch previousPaneState {
-            case .closed:
-                directionY = -1
-            case .mid:
-                if paneState == .closed {
-                    directionY = -1
-                } else {
-                    directionY = 1
-                }
-            case .open:
-                directionY = 1
-            }
-            let velocity = CGPoint(x: 0, y: directionY)
-            performStateChange(velocity: velocity)
-            return
+            velocity = calculateVelocity()
+        } else {
+            velocity = paneBehavior.velocity
         }
-        performStateChange(velocity: paneBehavior.velocity)
+        performStateChange(velocity: velocity)
     }
     
-    // MARK: - Private
+    // MARK: - Public Methods
+    
+    func changeState(to newState: PaneState) {
+        if newState == .mid && !showsMidState {
+            return
+        }
+        
+        previousPaneState = paneState
+        paneState = newState
+        animatePane(velocity: calculateVelocity())
+    }
+    
+    // MARK: - Private Methods
     
     fileprivate func animatePane(velocity: CGPoint) {
         paneBehavior.targetPoint = targetPoint
@@ -175,6 +175,23 @@ class PanelViewController: UIViewController {
             }
         }
         return panelViewHeight
+    }
+    
+    private func calculateVelocity() -> CGPoint {
+        let directionY: CGFloat
+        switch previousPaneState {
+        case .closed:
+            directionY = -1
+        case .mid:
+            if paneState == .closed {
+                directionY = -1
+            } else {
+                directionY = 1
+            }
+        case .open:
+            directionY = 1
+        }
+        return CGPoint(x: 0, y: directionY)
     }
     
     fileprivate func performStateChange(velocity: CGPoint) {
