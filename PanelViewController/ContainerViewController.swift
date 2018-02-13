@@ -11,7 +11,6 @@ import UIKit
 final class ContainerViewController: UIViewController {
     private let animateDownButton = UIButton()
     private let animateUpButton = UIButton()
-    private let changeStateControl = UISegmentedControl(items: ["Open", "Mid", "Closed"])
     private let panelViewController: PanelViewController
     
     init(panelViewController: PanelViewController) {
@@ -41,10 +40,6 @@ final class ContainerViewController: UIViewController {
         animateDownButton.setTitle(NSLocalizedString("Animate Down", comment: ""), for: .normal)
         animateDownButton.setTitleColor(.white, for: .normal)
         view.addSubview(animateDownButton)
-        
-        changeStateControl.addTarget(self, action: #selector(didTapChangeStateControl(_:)), for: .valueChanged)
-        changeStateControl.tintColor = .white
-        view.addSubview(changeStateControl)
     }
     
     deinit {
@@ -85,25 +80,6 @@ final class ContainerViewController: UIViewController {
         panelViewController.changeState(to: newState)
     }
     
-    @objc func didTapChangeStateControl(_ sender: UISegmentedControl) {
-        let newState: PaneState
-        switch sender.selectedSegmentIndex {
-        case 0:
-            newState = .open
-        case 1:
-            if !panelViewController.showsMidState {
-                sender.selectedSegmentIndex = -1
-                return
-            }
-            newState = .mid
-        case 2:
-            newState = .closed
-        default:
-            return
-        }
-        panelViewController.changeState(to: newState, animated: false)
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -113,7 +89,5 @@ final class ContainerViewController: UIViewController {
         
         animateUpButton.frame = CGRect(x: 0, y: (panelView?.frame.maxY ?? 0) + 16, width: view.frame.width / 2, height: 44)
         animateDownButton.frame = CGRect(x: animateUpButton.frame.maxX, y: animateUpButton.frame.minY, width: view.frame.width / 2, height: 44)
-        
-        changeStateControl.frame = CGRect(x: 0, y: animateDownButton.frame.maxY, width: view.frame.width, height: 44)
     }
 }

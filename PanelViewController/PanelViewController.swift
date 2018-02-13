@@ -138,30 +138,14 @@ class PanelViewController: UIViewController {
     
     // MARK: - Public Methods
     
-    func changeState(to newState: PaneState, animated: Bool = true) {
+    func changeState(to newState: PaneState) {
         if newState == .mid && !showsMidState {
             return
         }
         
         previousPaneState = paneState
         paneState = newState
-        if animated {
-            animatePane(velocity: calculateVelocity())
-            return
-        }
-        
-        updatePanelViewHeight()
-        var frame = paneView.frame
-        switch newState {
-        case .closed:
-            frame.origin.y = view.frame.height - closedHeight
-        case .mid:
-            guard showsMidState else { return }
-            frame.origin.y = midTopMargin ?? view.bounds.height / 2
-        case .open:
-            frame.origin.y = openTopMargin
-        }
-        paneView.frame = frame
+        animatePane(velocity: calculateVelocity())
     }
     
     // MARK: - Private Methods
