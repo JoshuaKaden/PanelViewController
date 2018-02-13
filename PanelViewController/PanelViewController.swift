@@ -166,7 +166,7 @@ class PanelViewController: UIViewController {
         paneView.frame = paneFrame
         
         panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
-        delay(0.2) {
+        delay(0.1) {
             self.view.setNeedsLayout()
         }
         
