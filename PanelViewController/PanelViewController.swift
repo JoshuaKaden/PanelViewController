@@ -117,6 +117,7 @@ class PanelViewController: UIViewController {
         dragHandleView.layer.cornerRadius = 3
         paneView.addSubview(dragHandleView)
 		
+        //We are consciously unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
         adoptChildViewController(mainViewController!)
         adoptChildViewController(panelViewController!, targetView: paneView)
         

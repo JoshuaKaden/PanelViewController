@@ -78,17 +78,22 @@ final class ViewController: UIViewController {
     }
     
     private func buildPanelViewController() -> PanelViewController {
-        let mapVC = MapViewController()
-        let listVC = ListViewController()
+        let vc: PanelViewController
         
-        var vc: PanelViewController = PanelViewController(mainViewController: mapVC, panelViewController: listVC)
-        
-        if let panelID = panelVCID ,
-            let panelVC = navigationController?.storyboard?.instantiateViewController(withIdentifier: panelID) as? PanelViewController
-            {
+        if let panelID = panelVCID,
+            let storyboard = navigationController?.storyboard,
+            let panelVC = storyboard.instantiateViewController(withIdentifier: panelID) as? PanelViewController
+        {
             vc = panelVC
+        } else {
+            vc = PanelViewController(mainViewController: MapViewController(), panelViewController: ListViewController())
         }
-                
+        
+        configure(panelViewController: vc)
+        return vc
+    }
+    
+    private func configure(panelViewController vc: PanelViewController) {
         if let closedHeight = Double(closedHeightTextField.text ?? "") {
             vc.closedHeight = CGFloat(closedHeight)
         }
@@ -102,7 +107,6 @@ final class ViewController: UIViewController {
         if let midTopMargin = Double(midTopMarginTextField.text ?? "") {
             vc.midTopMargin = CGFloat(midTopMargin)
         }
-        return vc
     }
 }
 

@@ -21,6 +21,9 @@
                         <viewLayoutGuide key="safeArea" id="pkC-HF-Jao"/>
                     </view>
                     <navigationItem key="navigationItem" id="JuE-RE-QGR"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="panelVCID" value="PanelViewController"/>
+                    </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZQf-lS-iiM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
