@@ -15,6 +15,7 @@ final class ViewController: UIViewController {
     private let openTopMarginTextField = UITextField()
     private let showsMidStateSwitch = UISwitch()
     private let stackView = UIStackView()
+    @IBInspectable var panelVCID: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,8 +81,14 @@ final class ViewController: UIViewController {
         let mapVC = MapViewController()
         let listVC = ListViewController()
         
-        let vc = PanelViewController(mainViewController: mapVC, panelViewController: listVC)
+        var vc: PanelViewController = PanelViewController(mainViewController: mapVC, panelViewController: listVC)
         
+        if let panelID = panelVCID ,
+            let panelVC = navigationController?.storyboard?.instantiateViewController(withIdentifier: panelID) as? PanelViewController
+            {
+            vc = panelVC
+        }
+                
         if let closedHeight = Double(closedHeightTextField.text ?? "") {
             vc.closedHeight = CGFloat(closedHeight)
         }
