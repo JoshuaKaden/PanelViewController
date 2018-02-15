@@ -40,14 +40,14 @@ class PanelViewController: UIViewController {
     private let dragHandleView = UIView()
     fileprivate var isDragging = false
     private var isFirstLayout = true
-    private var mainViewController: UIViewController?
+    private(set) var mainViewController: UIViewController?
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
-    private var panelViewController: UIViewController?
+    private(set) var panelViewController: UIViewController?
     private(set) var paneState = PaneState.closed
     private var previousPaneState = PaneState.closed
     private let paneView = DraggableView()
-    @IBInspectable var  mainViewControllerStoryBoardID : String?
-    @IBInspectable var  panelViewControllerStoryBoardID : String?
+    @IBInspectable private var  mainViewControllerStoryBoardID : String?
+    @IBInspectable private var  panelViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
 
     private var targetPoint: CGPoint {
@@ -89,7 +89,7 @@ class PanelViewController: UIViewController {
         }
         
         guard let panelVCID = self.panelViewControllerStoryBoardID else {
-            fatalError("Child View Controller ID not specified in Properties Inspector")
+            fatalError("Panel View Controller ID not specified in Properties Inspector")
         }
         
         self.mainViewController = self.storyboard?.instantiateViewController(withIdentifier: mainVCID)
