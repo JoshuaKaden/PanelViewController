@@ -40,12 +40,14 @@ class PanelViewController: UIViewController {
     private let dragHandleView = UIView()
     fileprivate var isDragging = false
     private var isFirstLayout = true
-    private let mainViewController: UIViewController
+    private(set) var mainViewController: UIViewController?
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
-    private let panelViewController: UIViewController
+    private(set) var panelViewController: UIViewController?
     private(set) var paneState = PaneState.closed
     private var previousPaneState = PaneState.closed
     private let paneView = DraggableView()
+    @IBInspectable private var  mainViewControllerStoryBoardID : String?
+    @IBInspectable private var  panelViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
 
     private var targetPoint: CGPoint {
@@ -75,13 +77,28 @@ class PanelViewController: UIViewController {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        // Currently, not able to invoke via a storyboard.
-        fatalError("init(coder:) has not been implemented")
+
+        super.init(coder: aDecoder)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        guard let mainVCID = self.mainViewControllerStoryBoardID else {
+            fatalError("Main View Controller ID not specified in Properties Inspector")
+        }
+        
+        guard let panelVCID = self.panelViewControllerStoryBoardID else {
+            fatalError("Panel View Controller ID not specified in Properties Inspector")
+        }
+        
+        self.mainViewController = self.storyboard?.instantiateViewController(withIdentifier: mainVCID)
+        self.panelViewController = self.storyboard?.instantiateViewController(withIdentifier: panelVCID)
     }
     
     deinit {
-        mainViewController.leaveParentViewController()
-        panelViewController.leaveParentViewController()
+        mainViewController?.leaveParentViewController()
+        panelViewController?.leaveParentViewController()
     }
     
     override func viewDidLoad() {
@@ -100,8 +117,9 @@ class PanelViewController: UIViewController {
         dragHandleView.layer.cornerRadius = 3
         paneView.addSubview(dragHandleView)
 		
-        adoptChildViewController(mainViewController)
-        adoptChildViewController(panelViewController, targetView: paneView)
+        //We are consciously unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
+        adoptChildViewController(mainViewController!)
+        adoptChildViewController(panelViewController!, targetView: paneView)
         
         view.bringSubview(toFront: paneView)
     }
@@ -117,7 +135,7 @@ class PanelViewController: UIViewController {
             paneView.frame = CGRect(x: 0, y: size.height - closedHeight, width: size.width, height: (size.height + stretchAllowance) - openTopMargin)
         }
         
-        mainViewController.view.frame = view.bounds
+        mainViewController?.view.frame = view.bounds
         updatePanelViewHeight()
         
         let dragHandleWidth = CGFloat(44)
@@ -218,7 +236,7 @@ class PanelViewController: UIViewController {
         } else {
             panelHeight = calculatePanelViewHeight(state: paneState)
         }
-        panelViewController.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: panelHeight - closedHeight - stretchAllowance)
+        panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: panelHeight - closedHeight - stretchAllowance)
     }
     
     fileprivate func updatePaneState(velocity: CGPoint) {
