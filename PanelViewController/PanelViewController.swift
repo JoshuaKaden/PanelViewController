@@ -17,6 +17,7 @@ class PanelViewController: UIViewController {
     // MARK: - Public Properties
     
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
+    @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
     var midTopMargin: CGFloat?
 	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
     var panelBackgroundColor: UIColor? {
@@ -32,6 +33,7 @@ class PanelViewController: UIViewController {
     // MARK: - Public Static Properties
     
     static let defaultClosedHeight = CGFloat(60)
+    static let defaultClosedBottomMargin = CGFloat(80)
     static let defaultOpenTopMargin = CGFloat(90)
     
     // MARK: - Private Properties
@@ -54,7 +56,7 @@ class PanelViewController: UIViewController {
         let size = view.bounds.size
         switch paneState {
         case .closed:
-            return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight))
+            return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight - closedBottomMargin))
         case .mid:
             let y: CGFloat
             if let midTopMargin = midTopMargin {
@@ -132,7 +134,7 @@ class PanelViewController: UIViewController {
         if isFirstLayout {
             isFirstLayout = false
             let size = view.bounds.size
-            paneView.frame = CGRect(x: 0, y: size.height - closedHeight, width: size.width, height: (size.height + stretchAllowance) - openTopMargin)
+            paneView.frame = CGRect(x: 0, y: size.height - closedHeight - closedBottomMargin, width: size.width, height: (size.height + stretchAllowance) - openTopMargin)
         }
         
         mainViewController?.view.frame = view.bounds

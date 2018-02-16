@@ -11,6 +11,7 @@ import UIKit
 final class ViewController: UIViewController {
     
     private let closedHeightTextField = UITextField()
+    private let closedBottomMarginTextField = UITextField()
     private let midTopMarginTextField = UITextField()
     private let openTopMarginTextField = UITextField()
     private let showsMidStateSwitch = UISwitch()
@@ -23,6 +24,7 @@ final class ViewController: UIViewController {
         
         add(textField: closedHeightTextField, text: String(describing: PanelViewController.defaultClosedHeight), title: NSLocalizedString("Closed height:", comment: ""))
         add(textField: openTopMarginTextField, text: String(describing: PanelViewController.defaultOpenTopMargin), title: NSLocalizedString("Open top margin:", comment: ""))
+        add(textField: closedBottomMarginTextField, text: String(describing: PanelViewController.defaultClosedBottomMargin), title: NSLocalizedString("Closed Bottom Margin:", comment: ""))
         addMidStateControls()
         add(textField: midTopMarginTextField, title: NSLocalizedString("Mid top margin:", comment: ""), placeholder: NSLocalizedString("1/2 superview height", comment: ""))
         addContainerizeControls()
@@ -121,6 +123,11 @@ final class ViewController: UIViewController {
         
         if let openTopMargin = Double(openTopMarginTextField.text ?? "") {
             vc.openTopMargin = CGFloat(openTopMargin)
+        }
+        
+        
+        if let closedBottomMargin = Double(closedBottomMarginTextField.text ?? "") {
+            vc.closedBottomMargin = CGFloat(closedBottomMargin)
         }
         
         vc.showsMidState = showsMidStateSwitch.isOn
