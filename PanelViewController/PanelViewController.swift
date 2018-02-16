@@ -33,7 +33,7 @@ class PanelViewController: UIViewController {
     // MARK: - Public Static Properties
     
     static let defaultClosedHeight = CGFloat(60)
-    static let defaultClosedBottomMargin = CGFloat(80)
+    static let defaultClosedBottomMargin = CGFloat(0)
     static let defaultOpenTopMargin = CGFloat(90)
     
     // MARK: - Private Properties
