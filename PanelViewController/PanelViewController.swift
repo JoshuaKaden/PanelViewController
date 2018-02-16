@@ -16,9 +16,9 @@ class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    var closedHeight = PanelViewController.defaultClosedHeight
+    @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
     var midTopMargin: CGFloat?
-	var openTopMargin = PanelViewController.defaultOpenTopMargin
+	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
     var panelBackgroundColor: UIColor? {
         get { return paneView.backgroundColor }
         set { paneView.backgroundColor = newValue }
@@ -27,7 +27,7 @@ class PanelViewController: UIViewController {
         get { return dragHandleView.backgroundColor }
         set { dragHandleView.backgroundColor = newValue }
     }
-    var showsMidState = true
+    @IBInspectable var showsMidState: Bool = true
 
     // MARK: - Public Static Properties
     
