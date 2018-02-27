@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DragPanelViewController
 
 final class ViewController: UIViewController {
     

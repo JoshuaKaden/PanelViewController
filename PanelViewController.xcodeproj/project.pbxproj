@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B54AE201D3EDE00576911 /* Utility-Delay.swift */; };
 		934577B22029FF7100D9044C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 934577B12029FF7100D9044C /* README.md */; };
+		935B5CD12045EBB2004FED88 /* DragPanelViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935B5CD02045EBB2004FED88 /* DragPanelViewController.framework */; };
+		935B5CD32045EBBA004FED88 /* DragPanelViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 935B5CD02045EBB2004FED88 /* DragPanelViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9377B88520322D7500ADCF5D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377B88420322D7500ADCF5D /* ContainerViewController.swift */; };
 		93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07D2018FD8C009E1804 /* AppDelegate.swift */; };
 		93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07F2018FD8C009E1804 /* ViewController.swift */; };
@@ -17,11 +18,8 @@
 		93A3C0882018FD8C009E1804 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93A3C0862018FD8C009E1804 /* LaunchScreen.storyboard */; };
 		93A3C0932018FD8C009E1804 /* PanelViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0922018FD8C009E1804 /* PanelViewControllerTests.swift */; };
 		93A3C09F2018FF30009E1804 /* UIViewController+Parenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */; };
-		93A3C0A120190130009E1804 /* PanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A020190130009E1804 /* PanelViewController.swift */; };
 		93A3C0A320190389009E1804 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A220190389009E1804 /* MapViewController.swift */; };
 		93A3C0A520190397009E1804 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A420190397009E1804 /* ListViewController.swift */; };
-		93A3C0A7201906C9009E1804 /* PaneBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A6201906C9009E1804 /* PaneBehavior.swift */; };
-		93A3C0A920191653009E1804 /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A820191653009E1804 /* DraggableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +32,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		935B5CD42045EBBA004FED88 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				935B5CD32045EBBA004FED88 /* DragPanelViewController.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		774B54AE201D3EDE00576911 /* Utility-Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility-Delay.swift"; sourceTree = "<group>"; };
 		934577B12029FF7100D9044C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		935B5CD02045EBB2004FED88 /* DragPanelViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DragPanelViewController.framework; path = PanelViewController/DragPanelViewController.framework; sourceTree = "<group>"; };
 		9377B88420322D7500ADCF5D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		93A3C07A2018FD8C009E1804 /* PanelViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PanelViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A3C07D2018FD8C009E1804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,11 +61,8 @@
 		93A3C0922018FD8C009E1804 /* PanelViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelViewControllerTests.swift; sourceTree = "<group>"; };
 		93A3C0942018FD8C009E1804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Parenting.swift"; sourceTree = "<group>"; };
-		93A3C0A020190130009E1804 /* PanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelViewController.swift; sourceTree = "<group>"; };
 		93A3C0A220190389009E1804 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		93A3C0A420190397009E1804 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
-		93A3C0A6201906C9009E1804 /* PaneBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneBehavior.swift; sourceTree = "<group>"; };
-		93A3C0A820191653009E1804 /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				935B5CD12045EBB2004FED88 /* DragPanelViewController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,13 +84,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		938532892045E7B10049FBA1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				935B5CD02045EBB2004FED88 /* DragPanelViewController.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		93A3C0712018FD8C009E1804 = {
 			isa = PBXGroup;
 			children = (
-				934577B12029FF7100D9044C /* README.md */,
+				938532892045E7B10049FBA1 /* Frameworks */,
 				93A3C07C2018FD8C009E1804 /* PanelViewController */,
 				93A3C0912018FD8C009E1804 /* PanelViewControllerTests */,
 				93A3C07B2018FD8C009E1804 /* Products */,
+				934577B12029FF7100D9044C /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,15 +118,12 @@
 				93A3C07D2018FD8C009E1804 /* AppDelegate.swift */,
 				93A3C0842018FD8C009E1804 /* Assets.xcassets */,
 				9377B88420322D7500ADCF5D /* ContainerViewController.swift */,
-				93A3C0A820191653009E1804 /* DraggableView.swift */,
 				93A3C0892018FD8C009E1804 /* Info.plist */,
 				93A3C0862018FD8C009E1804 /* LaunchScreen.storyboard */,
 				93A3C09D2018FF30009E1804 /* Library */,
 				93A3C0A420190397009E1804 /* ListViewController.swift */,
 				93A3C0812018FD8C009E1804 /* Main.storyboard */,
 				93A3C0A220190389009E1804 /* MapViewController.swift */,
-				93A3C0A6201906C9009E1804 /* PaneBehavior.swift */,
-				93A3C0A020190130009E1804 /* PanelViewController.swift */,
 				93A3C07F2018FD8C009E1804 /* ViewController.swift */,
 			);
 			path = PanelViewController;
@@ -126,7 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */,
-				774B54AE201D3EDE00576911 /* Utility-Delay.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -141,6 +156,7 @@
 				93A3C0762018FD8C009E1804 /* Sources */,
 				93A3C0772018FD8C009E1804 /* Frameworks */,
 				93A3C0782018FD8C009E1804 /* Resources */,
+				935B5CD42045EBBA004FED88 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -235,16 +251,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */,
 				93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */,
 				9377B88520322D7500ADCF5D /* ContainerViewController.swift in Sources */,
 				93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */,
-				93A3C0A920191653009E1804 /* DraggableView.swift in Sources */,
 				93A3C0A520190397009E1804 /* ListViewController.swift in Sources */,
 				93A3C09F2018FF30009E1804 /* UIViewController+Parenting.swift in Sources */,
-				93A3C0A7201906C9009E1804 /* PaneBehavior.swift in Sources */,
 				93A3C0A320190389009E1804 /* MapViewController.swift in Sources */,
-				93A3C0A120190130009E1804 /* PanelViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,8 +411,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E5LW2CH45C;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PanelViewController",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = PanelViewController/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gov.nyc.doitt.PanelViewController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -415,8 +432,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E5LW2CH45C;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PanelViewController",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = PanelViewController/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gov.nyc.doitt.PanelViewController;
 				PRODUCT_NAME = "$(TARGET_NAME)";

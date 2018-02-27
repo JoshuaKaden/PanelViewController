@@ -1,0 +1,11 @@
+framework module DragPanelViewController {
+  umbrella header "DragPanelViewController.h"
+
+  export *
+  module * { export * }
+}
+
+module DragPanelViewController.Swift {
+    header "DragPanelViewController-Swift.h"
+    requires objc
+}

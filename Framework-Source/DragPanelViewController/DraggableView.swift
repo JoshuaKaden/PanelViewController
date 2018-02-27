@@ -25,9 +25,15 @@ class DraggableView: UIView {
     }
     
     @objc func didPan(_ recognizer: UIPanGestureRecognizer) {
-        let targetView = superview
+        guard let targetView = superview else { return }
         let point = recognizer.translation(in: targetView)
+
+        var frame = self.frame
+        frame.size.height = targetView.bounds.height - frame.minY
+        self.frame = frame
+        
         center = CGPoint(x: center.x, y: center.y + point.y)
+        
         recognizer.setTranslation(CGPoint.zero, in: targetView)
         switch recognizer.state {
         case .began:

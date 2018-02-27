@@ -8,44 +8,45 @@
 
 import UIKit
 
-enum PaneState {
+public enum PaneState {
     case closed, mid, open
 }
 
-class PanelViewController: UIViewController {
+public class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
-    @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
-    var midTopMargin: CGFloat?
-	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
-    var panelBackgroundColor: UIColor? {
+    @IBInspectable public var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
+    @IBInspectable public var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
+    private(set) var mainViewController: UIViewController?
+    public var midTopMargin: CGFloat?
+    @IBInspectable public var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
+    public var panelBackgroundColor: UIColor? {
         get { return paneView.backgroundColor }
         set { paneView.backgroundColor = newValue }
     }
-    var panelHandleColor: UIColor? {
+    public var panelHandleColor: UIColor? {
         get { return dragHandleView.backgroundColor }
         set { dragHandleView.backgroundColor = newValue }
     }
-    @IBInspectable var showsMidState: Bool = true
+    private(set) var panelViewController: UIViewController?
+    public private(set) var paneState = PaneState.closed
+    @IBInspectable public var showsMidState: Bool = true
 
     // MARK: - Public Static Properties
     
-    static let defaultClosedHeight = CGFloat(60)
-    static let defaultClosedBottomMargin = CGFloat(0)
-    static let defaultOpenTopMargin = CGFloat(90)
+    public static let defaultClosedHeight = CGFloat(60)
+    public static let defaultClosedBottomMargin = CGFloat(0)
+    public static let defaultOpenTopMargin = CGFloat(90)
     
     // MARK: - Private Properties
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
     private let dragHandleView = UIView()
+    private var isAnimating = false
     fileprivate var isDragging = false
     private var isFirstLayout = true
-    private(set) var mainViewController: UIViewController?
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
-    private(set) var panelViewController: UIViewController?
-    private(set) var paneState = PaneState.closed
     private var previousPaneState = PaneState.closed
     private let paneView = DraggableView()
     @IBInspectable private var  mainViewControllerStoryBoardID : String?
@@ -72,18 +73,17 @@ class PanelViewController: UIViewController {
     
     // MARK: - Lifecycle
     
-    init(mainViewController: UIViewController, panelViewController: UIViewController) {
+    public init(mainViewController: UIViewController, panelViewController: UIViewController) {
         self.mainViewController = mainViewController
         self.panelViewController = panelViewController
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
         
         guard let mainVCID = self.mainViewControllerStoryBoardID else {
@@ -103,7 +103,7 @@ class PanelViewController: UIViewController {
         panelViewController?.leaveParentViewController()
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPaneView(_:)))
@@ -128,18 +128,34 @@ class PanelViewController: UIViewController {
     
     // MARK: - Layout
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        if isAnimating { return }
+        
+        let viewSize = view.bounds.size
+        var paneY: CGFloat = 0
+        switch paneState {
+        case .closed:
+            paneY = viewSize.height - closedHeight - closedBottomMargin
+        case .mid:
+            paneY = midTopMargin ?? viewSize.height / 2
+        case .open:
+            paneY = openTopMargin
+        }
         
         if isFirstLayout {
             isFirstLayout = false
-            let size = view.bounds.size
-            paneView.frame = CGRect(x: 0, y: size.height - closedHeight - closedBottomMargin, width: size.width, height: (size.height + stretchAllowance) - openTopMargin)
+            paneView.frame = CGRect(x: 0, y: paneY, width: viewSize.width, height: (viewSize.height + 88) - paneY)
         }
         
         mainViewController?.view.frame = view.bounds
-        updatePanelViewHeight()
-        
+        if isDragging {
+            panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight)
+        } else {
+            panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY)
+        }
+
         let dragHandleWidth = CGFloat(44)
         dragHandleView.frame = CGRect(x: (paneView.bounds.width / 2) - (dragHandleWidth / 2), y: 8, width: dragHandleWidth, height: 5)
     }
@@ -147,6 +163,15 @@ class PanelViewController: UIViewController {
     // MARK: - Handlers
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
+        var paneFrame = paneView.frame
+        paneFrame.size.height = view.bounds.height + 88
+        paneView.frame = paneFrame
+        
+        panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
+        delay(0.33) {
+            self.view.setNeedsLayout()
+        }
+        
         let velocity: CGPoint
         if showsMidState {
             velocity = calculateVelocity()
@@ -158,7 +183,7 @@ class PanelViewController: UIViewController {
     
     // MARK: - Public Methods
     
-    func changeState(to newState: PaneState) {
+    public func changeState(to newState: PaneState) {
         if newState == .mid && !showsMidState {
             return
         }
@@ -171,30 +196,22 @@ class PanelViewController: UIViewController {
     // MARK: - Private Methods
     
     fileprivate func animatePane(velocity: CGPoint) {
+        var paneFrame = paneView.frame
+        paneFrame.size.height = view.bounds.height + 88
+        paneView.frame = paneFrame
+        
+        panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
+        
         paneBehavior.targetPoint = targetPoint
         paneBehavior.velocity = velocity
+        
+        isAnimating = true
         animator.addBehavior(paneBehavior)
         
-        delay(0.1) {
-            [weak self] in
-            self?.updatePanelViewHeight()
+        delay(0.33) {
+            self.isAnimating = false
+            self.view.setNeedsLayout()
         }
-    }
-    
-    private func calculatePanelViewHeight(state: PaneState) -> CGFloat {
-        let panelViewHeight: CGFloat
-        let size = view.bounds.size
-        switch paneState {
-        case .closed, .open:
-            panelViewHeight = (size.height + stretchAllowance) - openTopMargin
-        case .mid:
-            if let midTopMargin = midTopMargin {
-                panelViewHeight = (size.height - midTopMargin) + stretchAllowance
-            } else {
-                panelViewHeight = (size.height / 2) + stretchAllowance
-            }
-        }
-        return panelViewHeight
     }
     
     private func calculateVelocity() -> CGPoint {
@@ -229,16 +246,6 @@ class PanelViewController: UIViewController {
         } else {
             paneState = .open
         }
-    }
-    
-    private func updatePanelViewHeight() {
-        let panelHeight: CGFloat
-        if isDragging {
-            panelHeight = calculatePanelViewHeight(state: .open)
-        } else {
-            panelHeight = calculatePanelViewHeight(state: paneState)
-        }
-        panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: panelHeight - closedHeight - stretchAllowance)
     }
     
     fileprivate func updatePaneState(velocity: CGPoint) {
@@ -276,11 +283,10 @@ extension PanelViewController: DraggableViewDelegate {
     func draggingBegan(view: DraggableView) {
         animator.removeAllBehaviors()
         isDragging = true
-        updatePanelViewHeight()
     }
     
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
-        performStateChange(velocity: velocity)
         isDragging = false
+        performStateChange(velocity: velocity)
     }
 }
