@@ -40,6 +40,7 @@ class PanelViewController: UIViewController {
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
     private let dragHandleView = UIView()
+    private var isAnimating = false
     fileprivate var isDragging = false
     private var isFirstLayout = true
     private(set) var mainViewController: UIViewController?
@@ -131,11 +132,13 @@ class PanelViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        if isAnimating { return }
+        
         let viewSize = view.bounds.size
         var paneY: CGFloat = 0
         switch paneState {
         case .closed:
-            paneY = viewSize.height - closedHeight
+            paneY = viewSize.height - closedHeight - closedBottomMargin
         case .mid:
             paneY = midTopMargin ?? viewSize.height / 2
         case .open:
@@ -189,7 +192,6 @@ class PanelViewController: UIViewController {
         previousPaneState = paneState
         paneState = newState
         animatePane(velocity: calculateVelocity())
-        view.setNeedsLayout()
     }
     
     // MARK: - Private Methods
@@ -199,9 +201,18 @@ class PanelViewController: UIViewController {
         paneFrame.size.height = view.bounds.height + 88
         paneView.frame = paneFrame
         
+        panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
+        
         paneBehavior.targetPoint = targetPoint
         paneBehavior.velocity = velocity
+        
+        isAnimating = true
         animator.addBehavior(paneBehavior)
+        
+        delay(0.33) {
+            self.isAnimating = false
+            self.view.setNeedsLayout()
+        }
     }
     
     private func calculateVelocity() -> CGPoint {
