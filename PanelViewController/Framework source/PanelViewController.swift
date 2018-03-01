@@ -22,11 +22,14 @@ class PanelViewController: UIViewController {
 	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
     var panelBackgroundColor: UIColor? {
         get { return paneView.backgroundColor }
-        set { paneView.backgroundColor = newValue }
+        set {
+            paneView.backgroundColor = newValue
+            dragHandleView.backgroundColor = newValue
+        }
     }
     var panelHandleColor: UIColor? {
-        get { return dragHandleView.backgroundColor }
-        set { dragHandleView.backgroundColor = newValue }
+        get { return dragHandleView.handleColor }
+        set { dragHandleView.handleColor = newValue }
     }
     @IBInspectable var showsMidState: Bool = true
 
@@ -39,7 +42,7 @@ class PanelViewController: UIViewController {
     // MARK: - Private Properties
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
-    private let dragHandleView = UIView()
+    private let dragHandleView = DragHandleView()
     private var isAnimating = false
     fileprivate var isDragging = false
     private var isFirstLayout = true
@@ -108,16 +111,15 @@ class PanelViewController: UIViewController {
         super.viewDidLoad()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPaneView(_:)))
-        paneView.addGestureRecognizer(tap)
+        dragHandleView.addGestureRecognizer(tap)
         paneView.backgroundColor = .lightGray
         paneView.delegate = self
         paneView.layer.cornerRadius = 8
         view.addSubview(paneView)
         
-        if dragHandleView.backgroundColor == nil {
-            dragHandleView.backgroundColor = .darkGray
+        if dragHandleView.handleColor == nil {
+            dragHandleView.handleColor = .darkGray
         }
-        dragHandleView.layer.cornerRadius = 3
         paneView.addSubview(dragHandleView)
 		
         //We are consciously unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
@@ -157,8 +159,7 @@ class PanelViewController: UIViewController {
             panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY)
         }
 
-        let dragHandleWidth = CGFloat(44)
-        dragHandleView.frame = CGRect(x: (paneView.bounds.width / 2) - (dragHandleWidth / 2), y: 8, width: dragHandleWidth, height: 5)
+        dragHandleView.frame = CGRect(x: 0, y: 0, width: paneView.frame.size.width, height: closedHeight)
     }
     
     // MARK: - Handlers
