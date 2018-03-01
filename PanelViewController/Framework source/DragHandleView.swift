@@ -10,25 +10,25 @@ import UIKit
 
 class DragHandleView: UIView {
     
-    let handleView = UIView();
+    var handleColor: UIColor? {
+        get { return handleView.backgroundColor }
+        set { handleView.backgroundColor = newValue }
+    }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    private let handleView = UIView()
+    
+    override func willMove(toWindow newWindow: UIWindow?) {
+        super.willMove(toWindow: newWindow)
+        guard let _ = newWindow else { return }
         
-        self.addSubview(handleView)
+        handleView.layer.cornerRadius = 3
+        addSubview(handleView)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.addSubview(handleView)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let dragHandleWidth = CGFloat(44)
+        handleView.frame = CGRect(x: (bounds.width / 2) - (dragHandleWidth / 2), y: 8, width: dragHandleWidth, height: 5)
     }
-    
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
 }
