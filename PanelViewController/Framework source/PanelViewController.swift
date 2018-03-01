@@ -22,7 +22,10 @@ class PanelViewController: UIViewController {
 	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
     var panelBackgroundColor: UIColor? {
         get { return paneView.backgroundColor }
-        set { paneView.backgroundColor = newValue }
+        set {
+            paneView.backgroundColor = newValue
+            dragHandleView.backgroundColor = newValue
+        }
     }
     var panelHandleColor: UIColor? {
         get { return dragHandleView.handleView.backgroundColor }
