@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B54AE201D3EDE00576911 /* Utility-Delay.swift */; };
+		8CCB210D2048A8BA007C31DE /* DragHandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB210C2048A8BA007C31DE /* DragHandleView.swift */; };
 		934577B22029FF7100D9044C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 934577B12029FF7100D9044C /* README.md */; };
 		9377B88520322D7500ADCF5D /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377B88420322D7500ADCF5D /* ContainerViewController.swift */; };
 		93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C07D2018FD8C009E1804 /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		774B54AE201D3EDE00576911 /* Utility-Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility-Delay.swift"; sourceTree = "<group>"; };
+		8CCB210C2048A8BA007C31DE /* DragHandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragHandleView.swift; sourceTree = "<group>"; };
 		934577B12029FF7100D9044C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		9377B88420322D7500ADCF5D /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		93A3C07A2018FD8C009E1804 /* PanelViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PanelViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,6 +111,7 @@
 				93A3C0A6201906C9009E1804 /* PaneBehavior.swift */,
 				93A3C0A020190130009E1804 /* PanelViewController.swift */,
 				93A3C07F2018FD8C009E1804 /* ViewController.swift */,
+				8CCB210C2048A8BA007C31DE /* DragHandleView.swift */,
 			);
 			path = PanelViewController;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */,
 				93A3C0802018FD8C009E1804 /* ViewController.swift in Sources */,
 				9377B88520322D7500ADCF5D /* ContainerViewController.swift in Sources */,
+				8CCB210D2048A8BA007C31DE /* DragHandleView.swift in Sources */,
 				93A3C07E2018FD8C009E1804 /* AppDelegate.swift in Sources */,
 				93A3C0A920191653009E1804 /* DraggableView.swift in Sources */,
 				93A3C0A520190397009E1804 /* ListViewController.swift in Sources */,
