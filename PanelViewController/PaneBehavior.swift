@@ -23,9 +23,11 @@ final class PaneBehavior: UIDynamicBehavior {
         }
     }
     
-    private let attachmentBehavior: UIAttachmentBehavior
+    //private let
+    var attachmentBehavior: UIAttachmentBehavior
     private let item: UIDynamicItem
-    private let itemBehavior: UIDynamicItemBehavior
+    //private let
+    var itemBehavior: UIDynamicItemBehavior
     
     init(item: UIDynamicItem) {
         self.item = item

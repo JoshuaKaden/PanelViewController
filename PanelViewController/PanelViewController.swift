@@ -69,7 +69,12 @@ class PanelViewController: UIViewController {
             return CGPoint(x: size.width / 2, y: (paneView.bounds.size.height / 2) + openTopMargin)
         }
     }
+    @IBOutlet weak var slider1: UISlider!
     
+    @IBOutlet weak var label1: UILabel!
+    @IBOutlet weak var slider2: UISlider!
+    
+    @IBOutlet weak var label2: UILabel!
     // MARK: - Lifecycle
     
     init(mainViewController: UIViewController, panelViewController: UIViewController) {
@@ -124,6 +129,11 @@ class PanelViewController: UIViewController {
         adoptChildViewController(panelViewController!, targetView: paneView)
         
         view.bringSubview(toFront: paneView)
+        view.bringSubview(toFront: slider1)
+        view.bringSubview(toFront: label1)
+        view.bringSubview(toFront: slider2)
+        view.bringSubview(toFront: label2)
+
     }
     
     // MARK: - Layout
@@ -142,9 +152,22 @@ class PanelViewController: UIViewController {
         
         let dragHandleWidth = CGFloat(44)
         dragHandleView.frame = CGRect(x: (paneView.bounds.width / 2) - (dragHandleWidth / 2), y: 8, width: dragHandleWidth, height: 5)
+        label1.text = "Den: " + String(slider1.value)
+        label2.text = "Res: " + String(slider2.value)
+
     }
     
     // MARK: - Handlers
+    
+    @IBAction func didMoveSlider1(_ sender: Any) {
+        paneBehavior.itemBehavior.density = CGFloat(slider1.value)
+        label1.text = "Dens: \(slider1.value)"
+    }
+    @IBAction func didMoveSlider2(_ sender: Any) {
+        paneBehavior.itemBehavior.resistance = CGFloat(slider2.value)
+
+    }
+    
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
         let velocity: CGPoint
