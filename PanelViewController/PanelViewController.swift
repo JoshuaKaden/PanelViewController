@@ -43,7 +43,7 @@ class PanelViewController: UIViewController {
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
     @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
     var midTopMargin: CGFloat?
-	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
+    @IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
     var panelBackgroundColor: UIColor? {
         get { return paneView.backgroundColor }
         set { paneView.backgroundColor = newValue }
@@ -53,7 +53,7 @@ class PanelViewController: UIViewController {
         set { dragHandleView.backgroundColor = newValue }
     }
     @IBInspectable var showsMidState: Bool = true
-
+    
     // MARK: - Public Static Properties
     
     static let defaultClosedHeight = CGFloat(60)
@@ -75,7 +75,7 @@ class PanelViewController: UIViewController {
     @IBInspectable private var  mainViewControllerStoryBoardID : String?
     @IBInspectable private var  panelViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
-
+    
     private var targetPoint: CGPoint {
         let size = view.bounds.size
         switch paneState {
@@ -100,7 +100,7 @@ class PanelViewController: UIViewController {
     
     @IBOutlet weak var label2: UILabel!
     @IBOutlet weak var slider3: UISlider!
- 
+    
     @IBOutlet weak var label3: UILabel!
     @IBOutlet weak var slider4: UISlider!
     
@@ -108,7 +108,7 @@ class PanelViewController: UIViewController {
     private var sliderStructs: [ SliderStruct] = []
     
     // MARK: - Lifecycle
-
+    
     init(mainViewController: UIViewController, panelViewController: UIViewController) {
         self.mainViewController = mainViewController
         self.panelViewController = panelViewController
@@ -116,7 +116,7 @@ class PanelViewController: UIViewController {
     }
     
     required init?(coder aDecoder: NSCoder) {
-
+        
         super.init(coder: aDecoder)
     }
     
@@ -155,12 +155,13 @@ class PanelViewController: UIViewController {
         }
         dragHandleView.layer.cornerRadius = 3
         paneView.addSubview(dragHandleView)
-		
+        
         //We are consciously unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
         adoptChildViewController(mainViewController!)
         adoptChildViewController(panelViewController!, targetView: paneView)
+        view.bringSubview(toFront: paneView)
         //expiremental
-
+        
         sliderStructs = [ SliderStruct(slider: slider1, label: label1, type: .length),
                           SliderStruct(slider: slider2, label: label2, type: .resistance),
                           SliderStruct(slider: slider3, label: label3, type: .damping),
@@ -169,7 +170,8 @@ class PanelViewController: UIViewController {
             view.bringSubview(toFront: $0.slider)
             view.bringSubview(toFront: $0.label)
         }
-
+        
+        
     }
     
     // MARK: - Layout
@@ -200,7 +202,7 @@ class PanelViewController: UIViewController {
     @IBAction func didMoveSlider2(_ sender: UISlider) {
         paneBehavior.itemBehavior.resistance = CGFloat(slider2.value)
         label2.text = sliderLabelText(type: .resistance, stringValue: String(slider2.value))
-
+        
     }
     @IBAction func didMoveSlider3(_ sender: UISlider) {
         paneBehavior.attachmentBehavior.damping = CGFloat(slider3.value)
