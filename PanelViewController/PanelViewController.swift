@@ -30,6 +30,12 @@ enum PaneBehaviorType: CustomStringConvertible {
     
 }
 
+struct SliderStruct {
+    let slider: UISlider
+    let label: UILabel
+    let type: PaneBehaviorType
+}
+
 class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
@@ -99,6 +105,7 @@ class PanelViewController: UIViewController {
     @IBOutlet weak var slider4: UISlider!
     
     @IBOutlet weak var label4: UILabel!
+    private var sliderStructs: [ SliderStruct] = []
     
     // MARK: - Lifecycle
 
@@ -152,16 +159,16 @@ class PanelViewController: UIViewController {
         //We are consciously unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
         adoptChildViewController(mainViewController!)
         adoptChildViewController(panelViewController!, targetView: paneView)
-        
-        view.bringSubview(toFront: paneView)
-        view.bringSubview(toFront: slider1)
-        view.bringSubview(toFront: label1)
-        view.bringSubview(toFront: slider2)
-        view.bringSubview(toFront: label2)
-        view.bringSubview(toFront: slider3)
-        view.bringSubview(toFront: slider4)
-        view.bringSubview(toFront: label3)
-        view.bringSubview(toFront: label4)
+        //expiremental
+
+        sliderStructs = [ SliderStruct(slider: slider1, label: label1, type: .length),
+                          SliderStruct(slider: slider2, label: label2, type: .resistance),
+                          SliderStruct(slider: slider3, label: label3, type: .damping),
+                          SliderStruct(slider: slider4, label: label4, type: .frequency) ]
+        sliderStructs.forEach {
+            view.bringSubview(toFront: $0.slider)
+            view.bringSubview(toFront: $0.label)
+        }
 
     }
     
@@ -181,10 +188,7 @@ class PanelViewController: UIViewController {
         
         let dragHandleWidth = CGFloat(44)
         dragHandleView.frame = CGRect(x: (paneView.bounds.width / 2) - (dragHandleWidth / 2), y: 8, width: dragHandleWidth, height: 5)
-        label1.text = "Length: " + String(slider1.value)
-        label2.text = "Resistance: " + String(slider2.value)
-        label3.text = "Damping: " + String(slider3.value)
-        label4.text = "Frequency: " + String(slider4.value)
+        sliderStructs.forEach { $0.label.text = sliderLabelText(type: $0.type, stringValue: String($0.slider.value))  }
     }
     
     // MARK: - Handlers
@@ -210,7 +214,7 @@ class PanelViewController: UIViewController {
     func sliderLabelText(type: PaneBehaviorType, stringValue: String) -> String {
         //was getting compiler errors with other methods so used this
         let firstString = String(describing: type)
-        return "\(firstString) :\(stringValue)"
+        return "\(firstString): \(stringValue)"
     }
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
