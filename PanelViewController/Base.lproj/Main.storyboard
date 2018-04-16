@@ -38,25 +38,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="100" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="N0N-M4-jdm">
-                                <rect key="frame" x="54" y="10" width="118" height="31"/>
+                                <rect key="frame" x="54" y="30" width="129" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="125" id="HZL-lo-Nht"/>
+                                </constraints>
                                 <connections>
                                     <action selector="didMoveSlider1:" destination="BYZ-38-t0r" eventType="valueChanged" id="a0L-Kf-aJR"/>
                                 </connections>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3VU-s7-Ska">
-                                <rect key="frame" x="54" y="48" width="118" height="31"/>
+                                <rect key="frame" x="54" y="68" width="129" height="31"/>
                                 <connections>
                                     <action selector="didMoveSlider2:" destination="BYZ-38-t0r" eventType="valueChanged" id="ddN-l1-thI"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3or-pt-azg">
-                                <rect key="frame" x="213" y="15" width="53" height="21"/>
+                                <rect key="frame" x="224" y="30.5" width="42" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oSd-1Y-lVc">
-                                <rect key="frame" x="178" y="57" width="42" height="21"/>
+                                <rect key="frame" x="224" y="72.5" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -64,20 +67,17 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="3or-pt-azg" firstAttribute="centerX" secondItem="N0N-M4-jdm" secondAttribute="centerX" constant="126.5" id="1vF-dr-Bn7"/>
                             <constraint firstItem="3or-pt-azg" firstAttribute="centerY" secondItem="N0N-M4-jdm" secondAttribute="centerY" id="3NK-5J-fhd"/>
-                            <constraint firstItem="3or-pt-azg" firstAttribute="leading" secondItem="N0N-M4-jdm" secondAttribute="leading" constant="157" id="G7B-EE-fjV"/>
                             <constraint firstItem="3VU-s7-Ska" firstAttribute="height" secondItem="N0N-M4-jdm" secondAttribute="height" id="JSq-Vj-AJ7"/>
-                            <constraint firstItem="oSd-1Y-lVc" firstAttribute="top" secondItem="3or-pt-azg" secondAttribute="bottom" constant="21" id="Lad-F9-Nn9"/>
                             <constraint firstItem="N0N-M4-jdm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="56" id="Zi2-Az-SRd"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="N0N-M4-jdm" secondAttribute="top" constant="10" id="ZqY-K1-Fp5"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="N0N-M4-jdm" secondAttribute="trailing" constant="205" id="Ztp-wM-rpS"/>
+                            <constraint firstItem="N0N-M4-jdm" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="ZqY-K1-Fp5"/>
                             <constraint firstItem="3VU-s7-Ska" firstAttribute="top" secondItem="N0N-M4-jdm" secondAttribute="bottom" constant="8" id="ceb-Iw-isZ"/>
                             <constraint firstItem="3VU-s7-Ska" firstAttribute="width" secondItem="N0N-M4-jdm" secondAttribute="width" id="fJe-EL-i9q"/>
                             <constraint firstItem="3or-pt-azg" firstAttribute="leading" secondItem="N0N-M4-jdm" secondAttribute="trailing" constant="43" id="fsG-a0-jCw"/>
-                            <constraint firstItem="oSd-1Y-lVc" firstAttribute="leading" secondItem="3VU-s7-Ska" secondAttribute="trailing" constant="8" symbolic="YES" id="gFf-wo-YvO"/>
-                            <constraint firstItem="3or-pt-azg" firstAttribute="height" secondItem="N0N-M4-jdm" secondAttribute="height" constant="-9" id="kB8-w1-UfA"/>
-                            <constraint firstItem="3VU-s7-Ska" firstAttribute="leading" secondItem="N0N-M4-jdm" secondAttribute="trailing" constant="-114" id="vyR-Vh-bfk"/>
+                            <constraint firstItem="oSd-1Y-lVc" firstAttribute="leading" secondItem="3VU-s7-Ska" secondAttribute="trailing" constant="43" id="gFf-wo-YvO"/>
+                            <constraint firstItem="3or-pt-azg" firstAttribute="height" secondItem="N0N-M4-jdm" secondAttribute="height" id="kB8-w1-UfA"/>
+                            <constraint firstItem="oSd-1Y-lVc" firstAttribute="centerY" secondItem="3VU-s7-Ska" secondAttribute="centerY" id="rv3-Ip-f9j"/>
+                            <constraint firstItem="3VU-s7-Ska" firstAttribute="leading" secondItem="N0N-M4-jdm" secondAttribute="leading" id="vyR-Vh-bfk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

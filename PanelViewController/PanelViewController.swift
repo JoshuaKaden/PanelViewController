@@ -165,6 +165,7 @@ class PanelViewController: UIViewController {
     }
     @IBAction func didMoveSlider2(_ sender: Any) {
         paneBehavior.itemBehavior.resistance = CGFloat(slider2.value)
+        label2.text = "Res: \(slider2.value)"
 
     }
     
