@@ -12,6 +12,24 @@ enum PaneState {
     case closed, mid, open
 }
 
+enum PaneBehaviorType: CustomStringConvertible {
+    case length, resistance, damping, frequency
+    
+    var description: String {
+        switch self {
+        case .length:
+            return "Length"
+        case .resistance:
+            return "Resistance"
+        case .damping:
+            return "Damping"
+        case .frequency:
+            return "Frequency"
+        }
+    }
+    
+}
+
 class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
@@ -75,8 +93,15 @@ class PanelViewController: UIViewController {
     @IBOutlet weak var slider2: UISlider!
     
     @IBOutlet weak var label2: UILabel!
-    // MARK: - Lifecycle
+    @IBOutlet weak var slider3: UISlider!
+ 
+    @IBOutlet weak var label3: UILabel!
+    @IBOutlet weak var slider4: UISlider!
     
+    @IBOutlet weak var label4: UILabel!
+    
+    // MARK: - Lifecycle
+
     init(mainViewController: UIViewController, panelViewController: UIViewController) {
         self.mainViewController = mainViewController
         self.panelViewController = panelViewController
@@ -133,6 +158,10 @@ class PanelViewController: UIViewController {
         view.bringSubview(toFront: label1)
         view.bringSubview(toFront: slider2)
         view.bringSubview(toFront: label2)
+        view.bringSubview(toFront: slider3)
+        view.bringSubview(toFront: slider4)
+        view.bringSubview(toFront: label3)
+        view.bringSubview(toFront: label4)
 
     }
     
@@ -152,23 +181,37 @@ class PanelViewController: UIViewController {
         
         let dragHandleWidth = CGFloat(44)
         dragHandleView.frame = CGRect(x: (paneView.bounds.width / 2) - (dragHandleWidth / 2), y: 8, width: dragHandleWidth, height: 5)
-        label1.text = "Den: " + String(slider1.value)
-        label2.text = "Res: " + String(slider2.value)
-
+        label1.text = "Length: " + String(slider1.value)
+        label2.text = "Resistance: " + String(slider2.value)
+        label3.text = "Damping: " + String(slider3.value)
+        label4.text = "Frequency: " + String(slider4.value)
     }
     
     // MARK: - Handlers
     
-    @IBAction func didMoveSlider1(_ sender: Any) {
-        paneBehavior.itemBehavior.density = CGFloat(slider1.value)
-        label1.text = "Dens: \(slider1.value)"
+    @IBAction func didMoveSlider1(_ sender: UISlider) {
+        paneBehavior.attachmentBehavior.length = CGFloat(slider1.value)
+        label1.text = sliderLabelText(type: .length, stringValue: String(slider1.value))
     }
-    @IBAction func didMoveSlider2(_ sender: Any) {
+    @IBAction func didMoveSlider2(_ sender: UISlider) {
         paneBehavior.itemBehavior.resistance = CGFloat(slider2.value)
-        label2.text = "Res: \(slider2.value)"
+        label2.text = sliderLabelText(type: .resistance, stringValue: String(slider2.value))
 
     }
+    @IBAction func didMoveSlider3(_ sender: UISlider) {
+        paneBehavior.attachmentBehavior.damping = CGFloat(slider3.value)
+        label3.text = sliderLabelText(type: .damping, stringValue: String(slider3.value))
+    }
+    @IBAction func didMoveSlider4(_ sender: UISlider) {
+        paneBehavior.attachmentBehavior.frequency = CGFloat(slider4.value)
+        label4.text = sliderLabelText(type: .frequency, stringValue: String(slider4.value))
+    }
     
+    func sliderLabelText(type: PaneBehaviorType, stringValue: String) -> String {
+        //was getting compiler errors with other methods so used this
+        let firstString = String(describing: type)
+        return "\(firstString) :\(stringValue)"
+    }
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
         let velocity: CGPoint

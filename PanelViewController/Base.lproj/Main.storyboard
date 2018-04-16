@@ -37,7 +37,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="100" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="N0N-M4-jdm">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="N0N-M4-jdm">
                                 <rect key="frame" x="54" y="30" width="129" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="125" id="HZL-lo-Nht"/>
@@ -52,8 +52,20 @@
                                     <action selector="didMoveSlider2:" destination="BYZ-38-t0r" eventType="valueChanged" id="ddN-l1-thI"/>
                                 </connections>
                             </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.40000000000000002" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="571-P8-Fiq">
+                                <rect key="frame" x="54" y="106" width="129" height="31"/>
+                                <connections>
+                                    <action selector="didMoveSlider3:" destination="BYZ-38-t0r" eventType="valueChanged" id="TPz-h6-CsT"/>
+                                </connections>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="3.5" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="kPx-js-dod">
+                                <rect key="frame" x="54" y="144" width="129" height="31"/>
+                                <connections>
+                                    <action selector="didMoveSlider4:" destination="BYZ-38-t0r" eventType="valueChanged" id="c3y-Tp-vS8"/>
+                                </connections>
+                            </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3or-pt-azg">
-                                <rect key="frame" x="224" y="30.5" width="42" height="30"/>
+                                <rect key="frame" x="224" y="30.5" width="151" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -64,19 +76,47 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8qA-eV-guw">
+                                <rect key="frame" x="224" y="110" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zpE-rI-Tyf">
+                                <rect key="frame" x="224" y="148.5" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="571-P8-Fiq" firstAttribute="width" secondItem="3VU-s7-Ska" secondAttribute="width" id="0al-Jh-Fzc"/>
+                            <constraint firstItem="8qA-eV-guw" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="2F2-S9-Nlh"/>
                             <constraint firstItem="3or-pt-azg" firstAttribute="centerY" secondItem="N0N-M4-jdm" secondAttribute="centerY" id="3NK-5J-fhd"/>
+                            <constraint firstItem="571-P8-Fiq" firstAttribute="top" secondItem="3VU-s7-Ska" secondAttribute="bottom" constant="8" id="9Nk-P1-1aq"/>
+                            <constraint firstItem="kPx-js-dod" firstAttribute="height" secondItem="N0N-M4-jdm" secondAttribute="height" id="CRq-oR-wvd"/>
+                            <constraint firstItem="zpE-rI-Tyf" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="EBQ-YP-4nG"/>
+                            <constraint firstItem="oSd-1Y-lVc" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Fl9-kS-puv"/>
+                            <constraint firstItem="kPx-js-dod" firstAttribute="width" secondItem="N0N-M4-jdm" secondAttribute="width" id="Ify-A3-iwE"/>
                             <constraint firstItem="3VU-s7-Ska" firstAttribute="height" secondItem="N0N-M4-jdm" secondAttribute="height" id="JSq-Vj-AJ7"/>
+                            <constraint firstItem="zpE-rI-Tyf" firstAttribute="centerY" secondItem="kPx-js-dod" secondAttribute="centerY" id="N0u-AS-inQ"/>
+                            <constraint firstItem="zpE-rI-Tyf" firstAttribute="leading" secondItem="kPx-js-dod" secondAttribute="trailing" constant="43" id="Pw7-Yb-eij"/>
+                            <constraint firstItem="kPx-js-dod" firstAttribute="top" secondItem="571-P8-Fiq" secondAttribute="bottom" constant="8" id="QIc-iV-uOh"/>
+                            <constraint firstItem="8qA-eV-guw" firstAttribute="leading" secondItem="571-P8-Fiq" secondAttribute="trailing" constant="43" id="Shp-30-RUL"/>
+                            <constraint firstItem="8qA-eV-guw" firstAttribute="centerY" secondItem="571-P8-Fiq" secondAttribute="centerY" id="XcI-uu-r7X"/>
                             <constraint firstItem="N0N-M4-jdm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="56" id="Zi2-Az-SRd"/>
                             <constraint firstItem="N0N-M4-jdm" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="ZqY-K1-Fp5"/>
                             <constraint firstItem="3VU-s7-Ska" firstAttribute="top" secondItem="N0N-M4-jdm" secondAttribute="bottom" constant="8" id="ceb-Iw-isZ"/>
                             <constraint firstItem="3VU-s7-Ska" firstAttribute="width" secondItem="N0N-M4-jdm" secondAttribute="width" id="fJe-EL-i9q"/>
+                            <constraint firstItem="571-P8-Fiq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="56" id="fSQ-Yv-NUq"/>
                             <constraint firstItem="3or-pt-azg" firstAttribute="leading" secondItem="N0N-M4-jdm" secondAttribute="trailing" constant="43" id="fsG-a0-jCw"/>
                             <constraint firstItem="oSd-1Y-lVc" firstAttribute="leading" secondItem="3VU-s7-Ska" secondAttribute="trailing" constant="43" id="gFf-wo-YvO"/>
                             <constraint firstItem="3or-pt-azg" firstAttribute="height" secondItem="N0N-M4-jdm" secondAttribute="height" id="kB8-w1-UfA"/>
+                            <constraint firstItem="kPx-js-dod" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="56" id="mAE-cf-nOm"/>
+                            <constraint firstItem="571-P8-Fiq" firstAttribute="height" secondItem="3VU-s7-Ska" secondAttribute="height" id="qEv-pe-IcI"/>
                             <constraint firstItem="oSd-1Y-lVc" firstAttribute="centerY" secondItem="3VU-s7-Ska" secondAttribute="centerY" id="rv3-Ip-f9j"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="3or-pt-azg" secondAttribute="trailing" id="tgh-2w-qCF"/>
                             <constraint firstItem="3VU-s7-Ska" firstAttribute="leading" secondItem="N0N-M4-jdm" secondAttribute="leading" id="vyR-Vh-bfk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -89,8 +129,12 @@
                     <connections>
                         <outlet property="label1" destination="3or-pt-azg" id="Qog-7s-Ca6"/>
                         <outlet property="label2" destination="oSd-1Y-lVc" id="mqp-iR-DZm"/>
+                        <outlet property="label3" destination="8qA-eV-guw" id="OF5-aT-bAK"/>
+                        <outlet property="label4" destination="zpE-rI-Tyf" id="pID-Fq-7Dr"/>
                         <outlet property="slider1" destination="N0N-M4-jdm" id="jIx-8z-9Uq"/>
                         <outlet property="slider2" destination="3VU-s7-Ska" id="Zpq-8B-TxB"/>
+                        <outlet property="slider3" destination="571-P8-Fiq" id="sF3-Or-iDF"/>
+                        <outlet property="slider4" destination="kPx-js-dod" id="MCr-lE-Tgv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
