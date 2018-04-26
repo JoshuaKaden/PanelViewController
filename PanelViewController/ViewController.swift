@@ -12,11 +12,13 @@ final class ViewController: UIViewController {
     
     private let closedHeightTextField = UITextField()
     private let closedBottomMarginTextField = UITextField()
+    private let containerizeSwitch = UISwitch()
     private let midTopMarginTextField = UITextField()
     private let openTopMarginTextField = UITextField()
     private let showsMidStateSwitch = UISwitch()
-    private let containerizeSwitch = UISwitch()
     private let stackView = UIStackView()
+    private let startingStateControl = UISegmentedControl(items: ["Closed", "Open", "Mid"])
+    
     @IBInspectable var panelVCID: String?
     
     override func viewDidLoad() {
@@ -38,8 +40,9 @@ final class ViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        stackView.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: view.bounds.width - 32, height: 44 * 6))
-        stackView.center = CGPoint(x: view.center.x, y: view.center.y - 80)
+        let rowCount = stackView.arrangedSubviews.count
+        stackView.frame = CGRect(origin: CGPoint.zero, size: CGSize(width: view.bounds.width - 32, height: 35 * CGFloat(rowCount)))
+        stackView.center = CGPoint(x: view.center.x, y: view.center.y)
     }
     
     @objc func didTapStart(_ sender: UIButton) {
@@ -60,7 +63,7 @@ final class ViewController: UIViewController {
     private func add(textField: UITextField, text: String? = nil, title: String, placeholder: String? = nil) {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .caption1)
-        label.frame = CGRect(x: 0, y: 0, width: 120, height: 44)
+        label.frame = CGRect(x: 0, y: 0, width: 140, height: 44)
         label.text = title
         
         textField.delegate = self
@@ -90,6 +93,14 @@ final class ViewController: UIViewController {
         
         showsMidStateSwitch.isOn = false
         stackView.addArrangedSubview(showsMidStateSwitch)
+        
+        let startingStateLabel = UILabel()
+        startingStateLabel.text = NSLocalizedString("Starting state:", comment: "")
+        startingStateLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        stackView.addArrangedSubview(startingStateLabel)
+        
+        startingStateControl.selectedSegmentIndex = 0
+        stackView.addArrangedSubview(startingStateControl)
     }
     
     private func addStartButton() {
@@ -134,6 +145,17 @@ final class ViewController: UIViewController {
         
         if let midTopMargin = Double(midTopMarginTextField.text ?? "") {
             vc.midTopMargin = CGFloat(midTopMargin)
+        }
+        
+        switch startingStateControl.selectedSegmentIndex {
+        case 0:
+            vc.startingState = .closed
+        case 1:
+            vc.startingState = .open
+        case 2:
+            vc.startingState = .mid
+        default:
+            break
         }
     }
 }
