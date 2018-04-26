@@ -32,6 +32,7 @@ class PanelViewController: UIViewController {
         set { dragHandleView.handleColor = newValue }
     }
     @IBInspectable var showsMidState: Bool = true
+    var startingState: PaneState = .closed
 
     // MARK: - Public Static Properties
     
@@ -49,8 +50,8 @@ class PanelViewController: UIViewController {
     private(set) var mainViewController: UIViewController?
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
     private(set) var panelViewController: UIViewController?
-    private(set) var paneState = PaneState.closed
-    private var previousPaneState = PaneState.closed
+    private(set) var paneState: PaneState = .closed
+    private var previousPaneState: PaneState = .closed
     private let paneView = DraggableView()
     @IBInspectable private var  mainViewControllerStoryBoardID : String?
     @IBInspectable private var  panelViewControllerStoryBoardID : String?
@@ -83,7 +84,6 @@ class PanelViewController: UIViewController {
     }
     
     required init?(coder aDecoder: NSCoder) {
-
         super.init(coder: aDecoder)
     }
     
@@ -109,6 +109,13 @@ class PanelViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if startingState == .mid && !showsMidState {
+            startingState = .closed
+        }
+        
+        paneState = startingState
+        previousPaneState = startingState
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPaneView(_:)))
         dragHandleView.addGestureRecognizer(tap)
