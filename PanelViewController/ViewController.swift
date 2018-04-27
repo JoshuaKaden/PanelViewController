@@ -120,7 +120,7 @@ final class ViewController: UIViewController {
         {
             vc = panelVC
         } else {
-            vc = PanelViewController(mainViewController: MapViewController(), panelViewController: ListViewController())
+            vc = PanelViewController(backViewController: MapViewController(), slidingViewController: ListViewController())
         }
         
         configure(panelViewController: vc)
