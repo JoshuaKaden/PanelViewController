@@ -47,9 +47,9 @@ class PanelViewController: UIViewController {
     private var isAnimating = false
     fileprivate var isDragging = false
     private var isFirstLayout = true
-    private(set) var mainViewController: UIViewController?
+    private(set) var backViewController: UIViewController?
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
-    private(set) var panelViewController: UIViewController?
+    private(set) var slidingViewController: UIViewController?
     private(set) var paneState: PaneState = .closed
     private var previousPaneState: PaneState = .closed
     private let paneView = DraggableView()
@@ -77,9 +77,9 @@ class PanelViewController: UIViewController {
     
     // MARK: - Lifecycle
     
-    init(mainViewController: UIViewController, panelViewController: UIViewController) {
-        self.mainViewController = mainViewController
-        self.panelViewController = panelViewController
+    init(backViewController: UIViewController, slidingViewController: UIViewController) {
+        self.backViewController = backViewController
+        self.slidingViewController = slidingViewController
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -98,13 +98,13 @@ class PanelViewController: UIViewController {
             fatalError("Panel View Controller ID not specified in Properties Inspector")
         }
         
-        self.mainViewController = self.storyboard?.instantiateViewController(withIdentifier: mainVCID)
-        self.panelViewController = self.storyboard?.instantiateViewController(withIdentifier: panelVCID)
+        self.backViewController = self.storyboard?.instantiateViewController(withIdentifier: mainVCID)
+        self.slidingViewController = self.storyboard?.instantiateViewController(withIdentifier: panelVCID)
     }
     
     deinit {
-        mainViewController?.leaveParentViewController()
-        panelViewController?.leaveParentViewController()
+        backViewController?.leaveParentViewController()
+        slidingViewController?.leaveParentViewController()
     }
     
     override func viewDidLoad() {
@@ -130,8 +130,8 @@ class PanelViewController: UIViewController {
         paneView.addSubview(dragHandleView)
 		
         //We are consciously unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
-        adoptChildViewController(mainViewController!)
-        adoptChildViewController(panelViewController!, targetView: paneView)
+        adoptChildViewController(backViewController!)
+        adoptChildViewController(slidingViewController!, targetView: paneView)
         
         view.bringSubview(toFront: paneView)
     }
@@ -159,11 +159,11 @@ class PanelViewController: UIViewController {
             paneView.frame = CGRect(x: 0, y: paneY, width: viewSize.width, height: (viewSize.height + 88) - paneY)
         }
         
-        mainViewController?.view.frame = view.bounds
+        backViewController?.view.frame = view.bounds
         if isDragging {
-            panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight)
+            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight)
         } else {
-            panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY)
+            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY)
         }
 
         dragHandleView.frame = CGRect(x: 0, y: 0, width: paneView.frame.size.width, height: closedHeight)
@@ -176,7 +176,7 @@ class PanelViewController: UIViewController {
         paneFrame.size.height = view.bounds.height + 88
         paneView.frame = paneFrame
         
-        panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
+        slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
         delay(0.33) {
             self.view.setNeedsLayout()
         }
@@ -209,7 +209,7 @@ class PanelViewController: UIViewController {
         paneFrame.size.height = view.bounds.height + 88
         paneView.frame = paneFrame
         
-        panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
+        slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
         
         paneBehavior.targetPoint = targetPoint
         paneBehavior.velocity = velocity
@@ -293,7 +293,7 @@ extension PanelViewController: DraggableViewDelegate {
         animator.removeAllBehaviors()
         isDragging = true
         
-        panelViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
+        slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
     }
     
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
