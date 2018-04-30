@@ -180,9 +180,7 @@ class PanelViewController: UIViewController {
         
         backViewController?.view.frame = view.bounds
         
-        let offset: CGFloat
-        offset = floatingHeaderHeight
-        
+        let offset: CGFloat = floatingHeaderHeight
         dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.bounds.width, height: closedHeight + offset)
         
         if let floatingHeaderView = floatingHeaderView {
@@ -255,6 +253,22 @@ class PanelViewController: UIViewController {
         var paneFrame = paneView.frame
         paneFrame.size.height = view.bounds.height + 88
         paneView.frame = paneFrame
+        
+        if let floatingHeaderView = floatingHeaderView {
+            let frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
+            let targetY = targetPoint.y - (paneView.bounds.height / 2)
+            
+            let floatTargetY: CGFloat
+            if targetY < floatingHeaderMinY {
+                floatTargetY = floatingHeaderMinY
+            } else {
+                floatTargetY = 0
+            }
+            
+            UIView.animate(withDuration: 0.33, animations: {
+                floatingHeaderView.frame = CGRect(x: frame.origin.x, y: floatTargetY, width: frame.size.width, height: self.floatingHeaderHeight)
+            })
+        }
         
         slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight - floatingHeaderHeight)
         
@@ -340,7 +354,7 @@ extension PanelViewController: DraggableViewDelegate {
         animator.removeAllBehaviors()
         isDragging = true
         
-        slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
+        slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
     }
     
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
