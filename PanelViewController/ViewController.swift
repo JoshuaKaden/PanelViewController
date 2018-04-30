@@ -167,6 +167,7 @@ final class ViewController: UIViewController {
             alertVC.addAction(action)
             self.present(alertVC, animated: true, completion: nil)
         }
+        // PanelViewController will adjust the origin and width as it sees fit. It will preserve whatever height you set.
         headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 60)
         vc.floatingHeaderView = headerView
     }

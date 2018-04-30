@@ -9,8 +9,6 @@
 import UIKit
 
 // This is an example of a view to be used by the PanelViewController's floatingHeaderView property.
-// PanelViewController will adjust the origin and width as it sees fit. It will preserve whatever height you set.
-
 final class ButtonContainerView: UIView {
     private let button = UIButton()
     var buttonAction: (() -> Void)?
