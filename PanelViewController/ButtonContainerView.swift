@@ -8,6 +8,9 @@
 
 import UIKit
 
+// This is an example of a view to be used by the PanelViewController's floatingHeaderView property.
+// PanelViewController will adjust the origin and width as it sees fit. It will preserve whatever height you set.
+
 final class ButtonContainerView: UIView {
     private let button = UIButton()
     var buttonAction: (() -> Void)?
@@ -38,6 +41,8 @@ final class ButtonContainerView: UIView {
     }
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        // This allows the button to be tapped. Every other touch is passed up the responder chain.
+        // In this way, the header view can be a "pass-through" view.
         if button.point(inside: convert(point, to: button), with: event) {
             return true
         }

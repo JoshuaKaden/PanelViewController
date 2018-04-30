@@ -19,13 +19,11 @@ class PanelViewController: UIViewController {
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
     @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
     
-    var floatingHeaderMinY: CGFloat { return view.bounds.height / 2 }
+    var floatingHeaderMinY: CGFloat?
     
     var floatingHeaderView: UIView? {
         get { return paneView.floatingHeaderView }
-        set {
-            paneView.floatingHeaderView = newValue
-        }
+        set { paneView.floatingHeaderView = newValue }
     }
     
     var midTopMargin: CGFloat?
@@ -184,6 +182,7 @@ class PanelViewController: UIViewController {
         dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.bounds.width, height: closedHeight + offset)
         
         if let floatingHeaderView = floatingHeaderView {
+            let floatingHeaderMinY = self.floatingHeaderMinY ?? view.bounds.height / 2
             let frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
             if paneView.frame.origin.y < floatingHeaderMinY {
                 let floatOffset = floatingHeaderMinY - paneView.frame.origin.y
@@ -259,6 +258,7 @@ class PanelViewController: UIViewController {
             let targetY = targetPoint.y - (paneView.bounds.height / 2)
             
             let floatTargetY: CGFloat
+            let floatingHeaderMinY = self.floatingHeaderMinY ?? view.bounds.height / 2
             if targetY < floatingHeaderMinY {
                 floatTargetY = floatingHeaderMinY
             } else {
