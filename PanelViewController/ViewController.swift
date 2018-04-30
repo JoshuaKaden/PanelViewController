@@ -159,6 +159,14 @@ final class ViewController: UIViewController {
         }
         
         let headerView = ButtonContainerView()
+        headerView.buttonAction = {
+            let alertVC = UIAlertController(title: "Button", message: "The button was tapped", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+                alertVC.dismiss(animated: true, completion: nil)
+            }
+            alertVC.addAction(action)
+            self.present(alertVC, animated: true, completion: nil)
+        }
         headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 60)
         vc.floatingHeaderView = headerView
     }
