@@ -20,12 +20,8 @@ class PanelViewController: UIViewController {
     @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
     
     var floatingHeaderView: UIView? {
-        didSet {
-            oldValue?.removeFromSuperview()
-            if let newValue = floatingHeaderView {
-                paneView.addSubview(newValue)
-            }
-        }
+        get { return paneView.floatingHeaderView }
+        set { paneView.floatingHeaderView = newValue }
     }
     
     var midTopMargin: CGFloat?

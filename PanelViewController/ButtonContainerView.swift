@@ -36,4 +36,13 @@ final class ButtonContainerView: UIView {
             buttonAction()
         }
     }
+    
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        if button.point(inside: convert(point, to: button), with: event) {
+            return true
+        }
+        
+        return false
+    }
+
 }
