@@ -43,18 +43,18 @@ class PanelViewController: UIViewController {
     // MARK: - Private Properties
     
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
+    private(set) var backViewController: UIViewController?
+    @IBInspectable private var backViewControllerStoryBoardID : String?
     private let dragHandleView = DragHandleView()
     private var isAnimating = false
     fileprivate var isDragging = false
     private var isFirstLayout = true
-    private(set) var backViewController: UIViewController?
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
-    private(set) var slidingViewController: UIViewController?
     private(set) var paneState: PaneState = .closed
     private var previousPaneState: PaneState = .closed
     private let paneView = DraggableView()
-    @IBInspectable private var  mainViewControllerStoryBoardID : String?
-    @IBInspectable private var  panelViewControllerStoryBoardID : String?
+    private(set) var slidingViewController: UIViewController?
+    @IBInspectable private var slidingViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
 
     private var targetPoint: CGPoint {
@@ -90,11 +90,11 @@ class PanelViewController: UIViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        guard let mainVCID = self.mainViewControllerStoryBoardID else {
+        guard let mainVCID = self.backViewControllerStoryBoardID else {
             fatalError("Main View Controller ID not specified in Properties Inspector")
         }
         
-        guard let panelVCID = self.panelViewControllerStoryBoardID else {
+        guard let panelVCID = self.slidingViewControllerStoryBoardID else {
             fatalError("Panel View Controller ID not specified in Properties Inspector")
         }
         
