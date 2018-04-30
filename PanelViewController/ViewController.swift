@@ -157,6 +157,10 @@ final class ViewController: UIViewController {
         default:
             break
         }
+        
+        let headerView = ButtonContainerView()
+        headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 60)
+        vc.floatingHeaderView = headerView
     }
 }
 
