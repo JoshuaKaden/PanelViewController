@@ -19,11 +19,13 @@ class PanelViewController: UIViewController {
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
     @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
     
-    var floatingHeaderMinY: CGFloat?
+    var floatingHeaderMinY: CGFloat { return view.bounds.height / 2 }
     
     var floatingHeaderView: UIView? {
         get { return paneView.floatingHeaderView }
-        set { paneView.floatingHeaderView = newValue }
+        set {
+            paneView.floatingHeaderView = newValue
+        }
     }
     
     var midTopMargin: CGFloat?
@@ -64,7 +66,7 @@ class PanelViewController: UIViewController {
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
     private(set) var paneState: PaneState = .closed
     private var previousPaneState: PaneState = .closed
-    private let paneView = DraggableView()
+    @objc private let paneView = DraggableView()
     private(set) var slidingViewController: UIViewController?
     @IBInspectable private var slidingViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
@@ -148,6 +150,8 @@ class PanelViewController: UIViewController {
         adoptChildViewController(slidingViewController!, targetView: paneView)
         
         view.bringSubview(toFront: paneView)
+        
+        addObserver(self, forKeyPath: #keyPath(paneView.center), options: [.new], context: nil)
     }
     
     // MARK: - Layout
@@ -158,12 +162,13 @@ class PanelViewController: UIViewController {
         if isAnimating { return }
         
         let viewSize = view.bounds.size
+        let midTopMargin = self.midTopMargin ?? viewSize.height / 2
         var paneY: CGFloat = 0
         switch paneState {
         case .closed:
             paneY = viewSize.height - closedHeight - closedBottomMargin - floatingHeaderHeight
         case .mid:
-            paneY = midTopMargin ?? viewSize.height / 2
+            paneY = midTopMargin
         case .open:
             paneY = openTopMargin
         }
@@ -178,15 +183,24 @@ class PanelViewController: UIViewController {
         let offset: CGFloat
         offset = floatingHeaderHeight
         
+        dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.bounds.width, height: closedHeight + offset)
+        
+        if let floatingHeaderView = floatingHeaderView {
+            let frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
+            if paneView.frame.origin.y < floatingHeaderMinY {
+                let floatOffset = floatingHeaderMinY - paneView.frame.origin.y
+                floatingHeaderView.frame = CGRect(x: frame.origin.x, y: floatOffset, width: frame.size.width, height: floatingHeaderHeight)
+            } else {
+                floatingHeaderView.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: floatingHeaderHeight)
+            }
+        }
+        
         if isDragging {
             slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight)
         } else {
             slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY)
         }
 
-        dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.frame.size.width, height: closedHeight + offset)
-        floatingHeaderView?.frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
-        
         paneView.frame = CGRect(x: 0, y: paneView.frame.origin.y, width: paneView.frame.size.width, height: paneView.frame.size.height)
     }
     
@@ -211,6 +225,18 @@ class PanelViewController: UIViewController {
         performStateChange(velocity: velocity)
     }
     
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard
+            keyPath == #keyPath(paneView.center)
+        else {
+            return
+        }
+        
+        if !isFirstLayout {
+            view.layoutIfNeeded()
+        }
+    }
+
     // MARK: - Public Methods
     
     func changeState(to newState: PaneState) {
