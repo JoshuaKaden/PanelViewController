@@ -21,6 +21,7 @@ class DraggableView: UIView {
             oldValue?.removeFromSuperview()
             if let newValue = floatingHeaderView {
                 addSubview(newValue)
+                sendSubview(toBack: newValue)
             }
         }
     }

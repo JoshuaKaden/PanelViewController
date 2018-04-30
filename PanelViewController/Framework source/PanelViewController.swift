@@ -19,6 +19,8 @@ class PanelViewController: UIViewController {
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
     @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
     
+    var floatingHeaderMinY: CGFloat?
+    
     var floatingHeaderView: UIView? {
         get { return paneView.floatingHeaderView }
         set { paneView.floatingHeaderView = newValue }
@@ -172,14 +174,17 @@ class PanelViewController: UIViewController {
         }
         
         backViewController?.view.frame = view.bounds
+        
+        let offset: CGFloat
+        offset = floatingHeaderHeight
+        
         if isDragging {
-            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight)
+            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight)
         } else {
-            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY)
+            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY)
         }
 
-        dragHandleView.frame = CGRect(x: 0, y: floatingHeaderHeight, width: paneView.frame.size.width, height: closedHeight + floatingHeaderHeight)
-        
+        dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.frame.size.width, height: closedHeight + offset)
         floatingHeaderView?.frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
         
         paneView.frame = CGRect(x: 0, y: paneView.frame.origin.y, width: paneView.frame.size.width, height: paneView.frame.size.height)
