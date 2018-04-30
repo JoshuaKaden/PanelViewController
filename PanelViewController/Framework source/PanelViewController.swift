@@ -185,6 +185,8 @@ class PanelViewController: UIViewController {
         dragHandleView.frame = CGRect(x: 0, y: floatingHeaderHeight, width: paneView.frame.size.width, height: closedHeight + floatingHeaderHeight)
         
         floatingHeaderView?.frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
+        
+        paneView.frame = CGRect(x: 0, y: paneView.frame.origin.y, width: paneView.frame.size.width, height: paneView.frame.size.height)
     }
     
     // MARK: - Handlers
