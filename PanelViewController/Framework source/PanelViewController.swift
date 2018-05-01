@@ -138,8 +138,8 @@ class PanelViewController: UIViewController {
     private var isFirstLayout = true
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
     private(set) var paneState: PanelState = .closed
-    private var previousPaneState: PanelState = .closed
     @objc private let paneView = DraggableView()
+    private var previousPaneState: PanelState = .closed
     private(set) var slidingViewController: UIViewController?
     @IBInspectable private var slidingViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
