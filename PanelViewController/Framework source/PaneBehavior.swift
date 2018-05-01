@@ -31,7 +31,7 @@ final class PaneBehavior: UIDynamicBehavior {
         self.item = item
         
         let attachmentBehavior = UIAttachmentBehavior(item: item, attachedToAnchor: CGPoint.zero)
-        attachmentBehavior.damping = 0.7
+        attachmentBehavior.damping = 0.6
         attachmentBehavior.frequency = 3.5
         attachmentBehavior.length = 0
         self.attachmentBehavior = attachmentBehavior

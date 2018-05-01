@@ -117,8 +117,6 @@ class PanelViewController: UIViewController {
     deinit {
         backViewController?.leaveParentViewController()
         slidingViewController?.leaveParentViewController()
-        
-        removeObserver(self, forKeyPath: #keyPath(paneView.center))
     }
     
     override func viewDidLoad() {
@@ -150,8 +148,6 @@ class PanelViewController: UIViewController {
         adoptChildViewController(slidingViewController!, targetView: paneView)
         
         view.bringSubview(toFront: paneView)
-        
-        addObserver(self, forKeyPath: #keyPath(paneView.center), options: [.new], context: nil)
     }
     
     // MARK: - Layout
@@ -197,7 +193,7 @@ class PanelViewController: UIViewController {
         if isDragging {
             slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight)
         } else {
-            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY)
+            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY - offset)
         }
 
         paneView.frame = CGRect(x: 0, y: paneView.frame.origin.y, width: paneView.frame.size.width, height: paneView.frame.size.height)
@@ -224,18 +220,6 @@ class PanelViewController: UIViewController {
         performStateChange(velocity: velocity)
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard
-            keyPath == #keyPath(paneView.center)
-        else {
-            return
-        }
-        
-        if !isFirstLayout {
-            view.layoutIfNeeded()
-        }
-    }
-
     // MARK: - Public Methods
     
     func changeState(to newState: PanelState) {
@@ -361,5 +345,13 @@ extension PanelViewController: DraggableViewDelegate {
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
         isDragging = false
         performStateChange(velocity: velocity)
+    }
+    
+    func shouldDrag(view: DraggableView, location: CGPoint) -> Bool {
+        let thisLocation = view.convert(location, to: self.view)
+        if thisLocation.y < openTopMargin {
+            return false
+        }
+        return true
     }
 }

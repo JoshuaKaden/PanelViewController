@@ -11,6 +11,7 @@ import UIKit
 protocol DraggableViewDelegate: class {
     func draggingBegan(view: DraggableView)
     func draggingEnded(view: DraggableView, velocity: CGPoint)
+    func shouldDrag(view: DraggableView, location: CGPoint) -> Bool
 }
 
 class DraggableView: UIView {
@@ -36,6 +37,7 @@ class DraggableView: UIView {
     
     @objc func didPan(_ recognizer: UIPanGestureRecognizer) {
         guard let targetView = superview else { return }
+        
         let point = recognizer.translation(in: targetView)
 
         var frame = self.frame
@@ -46,9 +48,17 @@ class DraggableView: UIView {
         
         recognizer.setTranslation(CGPoint.zero, in: targetView)
         switch recognizer.state {
-        case .began:
-            delegate?.draggingBegan(view: self)
-        case .ended:
+        case .began, .changed:
+            if !(delegate?.shouldDrag(view: self, location: point) ?? true) {
+                // Delegate says we should not drag.
+                recognizer.isEnabled = false
+                return
+            }
+            if recognizer.state == .began {
+                delegate?.draggingBegan(view: self)
+            }
+        case .cancelled, .ended:
+            recognizer.isEnabled = true
             let velocity = recognizer.velocity(in: targetView)
             delegate?.draggingEnded(view: self, velocity: CGPoint(x: 0, y: velocity.y))
         default:
@@ -77,3 +87,4 @@ class DraggableView: UIView {
         return super.point(inside: point, with: event)
     }
 }
+
