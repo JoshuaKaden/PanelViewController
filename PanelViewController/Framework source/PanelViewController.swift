@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum PaneState {
+enum PanelState {
     case closed, mid, open
 }
 
@@ -43,7 +43,7 @@ class PanelViewController: UIViewController {
     }
     
     @IBInspectable var showsMidState: Bool = true
-    var startingState: PaneState = .closed
+    var startingState: PanelState = .closed
 
     // MARK: - Public Static Properties
     
@@ -62,8 +62,8 @@ class PanelViewController: UIViewController {
     fileprivate var isDragging = false
     private var isFirstLayout = true
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
-    private(set) var paneState: PaneState = .closed
-    private var previousPaneState: PaneState = .closed
+    private(set) var paneState: PanelState = .closed
+    private var previousPaneState: PanelState = .closed
     @objc private let paneView = DraggableView()
     private(set) var slidingViewController: UIViewController?
     @IBInspectable private var slidingViewControllerStoryBoardID : String?
@@ -238,7 +238,7 @@ class PanelViewController: UIViewController {
 
     // MARK: - Public Methods
     
-    func changeState(to newState: PaneState) {
+    func changeState(to newState: PanelState) {
         if newState == .mid && !showsMidState {
             return
         }
@@ -355,7 +355,6 @@ extension PanelViewController: DraggableViewDelegate {
     func draggingBegan(view: DraggableView) {
         animator.removeAllBehaviors()
         isDragging = true
-        
         slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
     }
     
