@@ -73,7 +73,7 @@ class DraggableView: UIView {
                 return false
             }
         }
-        // The default path; return true.
-        return true
+        // The default path; return super's value.
+        return super.point(inside: point, with: event)
     }
 }
