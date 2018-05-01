@@ -117,6 +117,8 @@ class PanelViewController: UIViewController {
     deinit {
         backViewController?.leaveParentViewController()
         slidingViewController?.leaveParentViewController()
+        
+        removeObserver(self, forKeyPath: #keyPath(paneView.center))
     }
     
     override func viewDidLoad() {
