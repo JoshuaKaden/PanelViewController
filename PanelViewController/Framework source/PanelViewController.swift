@@ -119,6 +119,9 @@ class PanelViewController: UIViewController {
      The intitial panel state. The default is `.closed`.
      */
     var startingState: PanelState = .closed
+	
+    //start point for backView to begin darkening
+    var darkeningMinY: CGFloat = 0
 
     // MARK: - Public Static Properties
     
@@ -128,6 +131,8 @@ class PanelViewController: UIViewController {
     
     // MARK: - Private Properties
     
+    //this view controls the darkening and screen effects over the back view
+    private let backViewOverlay = OverlayView()
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
     private(set) var backViewController: UIViewController?
     @IBInspectable private var backViewControllerStoryBoardID : String?
@@ -206,6 +211,7 @@ class PanelViewController: UIViewController {
         
         paneView.delegate = self
         view.addSubview(paneView)
+        setupBackViewOverlay()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPaneView(_:)))
         dragHandleView.addGestureRecognizer(tap)
@@ -217,11 +223,13 @@ class PanelViewController: UIViewController {
             dragHandleView.handleColor = .darkGray
         }
         paneView.addSubview(dragHandleView)
-		
-        //We are consciously unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
+        
+        //We are consciously force unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
+        backViewOverlay.frame = backViewController!.view.frame
         adoptChildViewController(backViewController!)
         adoptChildViewController(slidingViewController!, targetView: paneView)
         
+        view.bringSubview(toFront: backViewOverlay)
         view.bringSubview(toFront: paneView)
     }
     
@@ -250,6 +258,7 @@ class PanelViewController: UIViewController {
         }
         
         backViewController?.view.frame = view.bounds
+        backViewOverlay.frame = backViewController?.view.frame ?? CGRect.zero
         
         let offset: CGFloat = floatingHeaderHeight
         dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.bounds.width, height: closedHeight + offset)
@@ -312,6 +321,16 @@ class PanelViewController: UIViewController {
         animatePane(velocity: calculateVelocity())
     }
     
+    func setupBackViewOverlay() {
+        backViewOverlay.backgroundColor = UIColor.black
+        backViewOverlay.opacity = 1
+        view.addSubview(backViewOverlay)
+    }
+    
+    func calculateOverlayOpacity(){
+        
+    }
+	
     // MARK: - Private Methods
     
     fileprivate func animatePane(velocity: CGPoint) {
