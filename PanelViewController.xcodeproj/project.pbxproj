@@ -23,6 +23,7 @@
 		93A3C0A520190397009E1804 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A420190397009E1804 /* ListViewController.swift */; };
 		93A3C0A7201906C9009E1804 /* PaneBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A6201906C9009E1804 /* PaneBehavior.swift */; };
 		93A3C0A920191653009E1804 /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A820191653009E1804 /* DraggableView.swift */; };
+		93D37FF52097797F00761908 /* ButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D37FF42097797F00761908 /* ButtonContainerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		93A3C0A420190397009E1804 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		93A3C0A6201906C9009E1804 /* PaneBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneBehavior.swift; sourceTree = "<group>"; };
 		93A3C0A820191653009E1804 /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
+		93D37FF42097797F00761908 /* ButtonContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonContainerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 			children = (
 				93A3C07D2018FD8C009E1804 /* AppDelegate.swift */,
 				93A3C0842018FD8C009E1804 /* Assets.xcassets */,
+				93D37FF42097797F00761908 /* ButtonContainerView.swift */,
 				9377B88420322D7500ADCF5D /* ContainerViewController.swift */,
 				9399F69F2048B1030047574B /* Framework source */,
 				93A3C0892018FD8C009E1804 /* Info.plist */,
@@ -256,6 +259,7 @@
 				93A3C09F2018FF30009E1804 /* UIViewController+Parenting.swift in Sources */,
 				93A3C0A7201906C9009E1804 /* PaneBehavior.swift in Sources */,
 				93A3C0A320190389009E1804 /* MapViewController.swift in Sources */,
+				93D37FF52097797F00761908 /* ButtonContainerView.swift in Sources */,
 				93A3C0A120190130009E1804 /* PanelViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
