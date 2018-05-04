@@ -10,7 +10,7 @@ import UIKit
 
 class OverlayView: UIView {
     
-    var opacity: CGFloat = 0
+//    var opacity: CGFloat = 0
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         return false
@@ -18,7 +18,7 @@ class OverlayView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = backgroundColor?.withAlphaComponent(opacity)
+//        backgroundColor = backgroundColor?.withAlphaComponent(opacity)
     }
 
 }

@@ -211,6 +211,7 @@ class PanelViewController: UIViewController {
         
         paneView.delegate = self
         view.addSubview(paneView)
+        
         setupBackViewOverlay()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPaneView(_:)))
@@ -225,7 +226,6 @@ class PanelViewController: UIViewController {
         paneView.addSubview(dragHandleView)
         
         //We are consciously force unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
-        backViewOverlay.frame = backViewController!.view.frame
         adoptChildViewController(backViewController!)
         adoptChildViewController(slidingViewController!, targetView: paneView)
         
@@ -322,6 +322,26 @@ class PanelViewController: UIViewController {
     }
     
     func setupBackViewOverlay() {
+        darkeningMinY = view.frame.height/2
+        darkenOverlay()
+        view.addSubview(backViewOverlay)
+    }
+    
+    func darkenOverlay() {
+        let overlayAlpha: CGFloat =  calculateOverlayOpacity(finalDesiredOpacity: 0.85, targetY: paneView.frame.minY)
+        backViewOverlay.backgroundColor = UIColor.black.withAlphaComponent(overlayAlpha)
+    }
+    
+    func calculateOverlayOpacity(finalDesiredOpacity: CGFloat, targetY: CGFloat) -> CGFloat {
+        let currentY = targetY
+        //if the pane should not begin darkening return no opacity
+        if currentY > darkeningMinY { return 0 }
+        //subtract the percentage of the sliding panel vs the minY
+        let ratio = currentY / darkeningMinY
+        return finalDesiredOpacity - ratio
+    }
+	
+    func setupBackViewOverlay() {
         backViewOverlay.backgroundColor = UIColor.black
         backViewOverlay.opacity = 1
         view.addSubview(backViewOverlay)
@@ -363,6 +383,7 @@ class PanelViewController: UIViewController {
         isAnimating = true
         animator.addBehavior(paneBehavior)
         
+        darkenOverlay()
         delay(0.33) {
             self.isAnimating = false
             self.view.setNeedsLayout()
@@ -446,10 +467,12 @@ extension PanelViewController: DraggableViewDelegate {
         if thisLocation.y < openTopMargin {
             view.cancelDrag()
         }
+		
+        darkenOverlay()
     }
     
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
         isDragging = false
         performStateChange(velocity: velocity)
-    }
+    }    
 }
