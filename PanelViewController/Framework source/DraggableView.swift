@@ -11,6 +11,13 @@ import UIKit
 protocol DraggableViewDelegate: class {
     func draggingBegan(view: DraggableView)
     func draggingEnded(view: DraggableView, velocity: CGPoint)
+    
+    /// Informs the DraggableView whether a drag should proceed.
+    ///
+    /// This is useful if you want to enforce boundaries beyond which no dragging can occur.
+    ///
+    /// - Parameter view: The DraggableView instance
+    /// - Parameter location: The current location of the drag point, in the DraggableView's coordinate system (use `convert(_, to: yourView)` to match this point to your view's coordinate system)
     func shouldDrag(view: DraggableView, location: CGPoint) -> Bool
 }
 
