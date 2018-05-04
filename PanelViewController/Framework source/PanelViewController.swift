@@ -328,29 +328,19 @@ class PanelViewController: UIViewController {
     }
     
     func darkenOverlay() {
-        let overlayAlpha: CGFloat =  calculateOverlayOpacity(finalDesiredOpacity: 0.85, targetY: paneView.frame.minY)
+        let overlayAlpha: CGFloat =  calculateOverlayOpacity(maxOpacity: 0.85, targetY: paneView.frame.minY)
         backViewOverlay.backgroundColor = UIColor.black.withAlphaComponent(overlayAlpha)
     }
     
-    func calculateOverlayOpacity(finalDesiredOpacity: CGFloat, targetY: CGFloat) -> CGFloat {
+    func calculateOverlayOpacity(maxOpacity: CGFloat, targetY: CGFloat) -> CGFloat {
         let currentY = targetY
         //if the pane should not begin darkening return no opacity
         if currentY > darkeningMinY { return 0 }
         //subtract the percentage of the sliding panel vs the minY
         let ratio = currentY / darkeningMinY
-        return finalDesiredOpacity - ratio
-    }
-	
-    func setupBackViewOverlay() {
-        backViewOverlay.backgroundColor = UIColor.black
-        backViewOverlay.opacity = 1
-        view.addSubview(backViewOverlay)
+        return maxOpacity - ratio
     }
     
-    func calculateOverlayOpacity(){
-        
-    }
-	
     // MARK: - Private Methods
     
     fileprivate func animatePane(velocity: CGPoint) {

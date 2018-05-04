@@ -57,7 +57,6 @@ class DraggableView: UIView {
             delegate?.draggingChanged(view: self, location: point)
         case .cancelled, .ended:
             recognizer.isEnabled = true
-        case .ended:
             let velocity = recognizer.velocity(in: targetView)
             delegate?.draggingEnded(view: self, velocity: CGPoint(x: 0, y: velocity.y))
         default:
