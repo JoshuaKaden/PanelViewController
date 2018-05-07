@@ -327,7 +327,7 @@ class PanelViewController: UIViewController {
         var paneFrame = paneView.frame
         paneFrame.size.height = view.bounds.height + 88
         paneView.frame = paneFrame
-        
+        // We're using targetY as a reference point for the darkening overlay
         let targetY: CGFloat
         switch panelState {
         case .closed:
