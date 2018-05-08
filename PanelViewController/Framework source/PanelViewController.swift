@@ -469,6 +469,7 @@ extension PanelViewController: DraggableViewDelegate {
         let thisLocation = view.convert(location, to: self.view)
         if thisLocation.y < openTopMargin {
             view.cancelDrag()
+            return
         }
         darkenOverlay(targetY: thisLocation.y)
     }
