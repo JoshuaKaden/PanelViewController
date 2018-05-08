@@ -256,8 +256,10 @@ class PanelViewController: UIViewController {
             isFirstLayout = false
             paneView.frame = CGRect(x: 0, y: paneY, width: viewSize.width, height: (viewSize.height + 88) - paneY)
         }
-        
+        //1. per specs, set backView frame
         backViewController?.view.frame = view.bounds
+        //2. backViewOverlay frame has to be the same as backViewController, per specs.
+        //   if backViewControllerFrame is nil, then there should not be an overlay.
         backViewOverlay.frame = backViewController?.view.frame ?? CGRect.zero
         
         let offset: CGFloat = floatingHeaderHeight
