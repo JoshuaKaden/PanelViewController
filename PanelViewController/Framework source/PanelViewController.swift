@@ -422,16 +422,15 @@ extension PanelViewController: DraggableViewDelegate {
         slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
     }
     
+    func draggingChanged(view: DraggableView, location: CGPoint) {
+        let thisLocation = view.convert(location, to: self.view)
+        if thisLocation.y < openTopMargin {
+            view.cancelDrag()
+        }
+    }
+    
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
         isDragging = false
         performStateChange(velocity: velocity)
-    }
-    
-    func shouldDrag(view: DraggableView, location: CGPoint) -> Bool {
-        let thisLocation = view.convert(location, to: self.view)
-        if thisLocation.y < openTopMargin {
-            return false
-        }
-        return true
     }
 }

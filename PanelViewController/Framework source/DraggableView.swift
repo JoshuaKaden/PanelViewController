@@ -10,15 +10,8 @@ import UIKit
 
 protocol DraggableViewDelegate: class {
     func draggingBegan(view: DraggableView)
+    func draggingChanged(view: DraggableView, location: CGPoint)
     func draggingEnded(view: DraggableView, velocity: CGPoint)
-    
-    /// Informs the DraggableView whether a drag should proceed.
-    ///
-    /// This is useful if you want to enforce boundaries beyond which no dragging can occur.
-    ///
-    /// - Parameter view: The DraggableView instance
-    /// - Parameter location: The current location of the drag point, in the DraggableView's coordinate system (use `convert(_, to: yourView)` to match this point to your view's coordinate system)
-    func shouldDrag(view: DraggableView, location: CGPoint) -> Bool
 }
 
 class DraggableView: UIView {
@@ -34,12 +27,15 @@ class DraggableView: UIView {
         }
     }
     
+    private var recognizer: UIPanGestureRecognizer?
+    
     override func willMove(toWindow newWindow: UIWindow?) {
         super.willMove(toWindow: newWindow)
         guard let _ = newWindow else { return }
         
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
         addGestureRecognizer(recognizer)
+        self.recognizer = recognizer
     }
     
     @objc func didPan(_ recognizer: UIPanGestureRecognizer) {
@@ -55,15 +51,10 @@ class DraggableView: UIView {
         
         recognizer.setTranslation(CGPoint.zero, in: targetView)
         switch recognizer.state {
-        case .began, .changed:
-            if !(delegate?.shouldDrag(view: self, location: point) ?? true) {
-                // Delegate says we should not drag.
-                recognizer.isEnabled = false
-                return
-            }
-            if recognizer.state == .began {
-                delegate?.draggingBegan(view: self)
-            }
+        case .began:
+            delegate?.draggingBegan(view: self)
+        case .changed:
+            delegate?.draggingChanged(view: self, location: point)
         case .cancelled, .ended:
             recognizer.isEnabled = true
             let velocity = recognizer.velocity(in: targetView)
@@ -93,5 +84,8 @@ class DraggableView: UIView {
         // The default path; return super's value.
         return super.point(inside: point, with: event)
     }
+    
+    func cancelDrag() {
+        recognizer?.isEnabled = false
+    }
 }
-
