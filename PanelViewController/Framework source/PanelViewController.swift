@@ -132,7 +132,7 @@ class PanelViewController: UIViewController {
     // MARK: - Private Properties
     
     //this view controls the darkening and screen effects over the back view
-    private let backViewOverlay = OverlayView()
+    private let backViewOverlay = PassThroughView()
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
     private(set) var backViewController: UIViewController?
     @IBInspectable private var backViewControllerStoryBoardID : String?

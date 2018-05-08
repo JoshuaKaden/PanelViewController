@@ -1,5 +1,5 @@
 //
-//  OverlayView.swift
+//  PassThroughView.swift
 //  PanelViewController
 //
 //  Created by Rynn, David on 5/3/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class OverlayView: UIView {
+class PassThroughView: UIView {
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         return false
