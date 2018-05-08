@@ -119,6 +119,9 @@ class PanelViewController: UIViewController {
      The intitial panel state. The default is `.closed`.
      */
     var startingState: PanelState = .closed
+	
+    //start point for backView to begin darkening
+    var darkeningMinY: CGFloat = 0
 
     // MARK: - Public Static Properties
     
@@ -128,6 +131,8 @@ class PanelViewController: UIViewController {
     
     // MARK: - Private Properties
     
+    //this view controls the darkening and screen effects over the back view
+    private let backViewOverlay = PassThroughView()
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
     private(set) var backViewController: UIViewController?
     @IBInspectable private var backViewControllerStoryBoardID : String?
@@ -137,7 +142,7 @@ class PanelViewController: UIViewController {
     fileprivate var isDragging = false
     private var isFirstLayout = true
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
-    private(set) var paneState: PanelState = .closed
+    private(set) var panelState: PanelState = .closed
     @objc private let paneView = DraggableView()
     private var previousPaneState: PanelState = .closed
     private(set) var slidingViewController: UIViewController?
@@ -146,7 +151,7 @@ class PanelViewController: UIViewController {
 
     private var targetPoint: CGPoint {
         let size = view.bounds.size
-        switch paneState {
+        switch panelState {
         case .closed:
             return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight - closedBottomMargin - floatingHeaderHeight))
         case .mid:
@@ -201,11 +206,13 @@ class PanelViewController: UIViewController {
             startingState = .closed
         }
         
-        paneState = startingState
+        panelState = startingState
         previousPaneState = startingState
         
         paneView.delegate = self
         view.addSubview(paneView)
+        
+        setupBackViewOverlay()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPaneView(_:)))
         dragHandleView.addGestureRecognizer(tap)
@@ -217,11 +224,12 @@ class PanelViewController: UIViewController {
             dragHandleView.handleColor = .darkGray
         }
         paneView.addSubview(dragHandleView)
-		
-        //We are consciously unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
+        
+        //We are consciously force unwrapping the main and panel view controllers as they would have to be compulsorily instantiated through the custom init or through the awakeFromNib()
         adoptChildViewController(backViewController!)
         adoptChildViewController(slidingViewController!, targetView: paneView)
         
+        view.bringSubview(toFront: backViewOverlay)
         view.bringSubview(toFront: paneView)
     }
     
@@ -235,7 +243,7 @@ class PanelViewController: UIViewController {
         let viewSize = view.bounds.size
         let midTopMargin = self.midTopMargin ?? viewSize.height / 2
         var paneY: CGFloat = 0
-        switch paneState {
+        switch panelState {
         case .closed:
             paneY = viewSize.height - closedHeight - closedBottomMargin - floatingHeaderHeight
         case .mid:
@@ -248,8 +256,11 @@ class PanelViewController: UIViewController {
             isFirstLayout = false
             paneView.frame = CGRect(x: 0, y: paneY, width: viewSize.width, height: (viewSize.height + 88) - paneY)
         }
-        
+        //1. per specs, set backView frame
         backViewController?.view.frame = view.bounds
+        //2. backViewOverlay frame has to be the same as backViewController, per specs.
+        //   if backViewControllerFrame is nil, then there should not be an overlay.
+        backViewOverlay.frame = backViewController?.view.frame ?? CGRect.zero
         
         let offset: CGFloat = floatingHeaderHeight
         dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.bounds.width, height: closedHeight + offset)
@@ -307,8 +318,8 @@ class PanelViewController: UIViewController {
             return
         }
         
-        previousPaneState = paneState
-        paneState = newState
+        previousPaneState = panelState
+        panelState = newState
         animatePane(velocity: calculateVelocity())
     }
     
@@ -318,6 +329,16 @@ class PanelViewController: UIViewController {
         var paneFrame = paneView.frame
         paneFrame.size.height = view.bounds.height + 88
         paneView.frame = paneFrame
+        // We're using targetY as a reference point for the darkening overlay
+        let targetY: CGFloat
+        switch panelState {
+        case .closed:
+            targetY = view.bounds.height - closedHeight
+        case .mid:
+            targetY = midTopMargin ?? view.bounds.size.height / 2
+        case .open:
+            targetY = openTopMargin
+        }
         
         if let floatingHeaderView = floatingHeaderView {
             let frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
@@ -333,6 +354,11 @@ class PanelViewController: UIViewController {
             
             UIView.animate(withDuration: 0.33, animations: {
                 floatingHeaderView.frame = CGRect(x: frame.origin.x, y: floatTargetY, width: frame.size.width, height: self.floatingHeaderHeight)
+                self.darkenOverlay(targetY: targetY)
+            })
+        } else {
+            UIView.animate(withDuration: 0.33, animations: {
+                self.darkenOverlay(targetY: targetY)
             })
         }
         
@@ -350,13 +376,21 @@ class PanelViewController: UIViewController {
         }
     }
     
+    private func calculateOverlayOpacity(maxOpacity: CGFloat, targetY: CGFloat) -> CGFloat {
+        //if the pane should not begin darkening return no opacity
+        if targetY > darkeningMinY { return 0 }
+        //subtract the percentage of the sliding panel vs the minY
+        let ratio = targetY / darkeningMinY
+        return maxOpacity - ratio
+    }
+
     private func calculateVelocity() -> CGPoint {
         let directionY: CGFloat
         switch previousPaneState {
         case .closed:
             directionY = -1
         case .mid:
-            if paneState == .closed {
+            if panelState == .closed {
                 directionY = -1
             } else {
                 directionY = 1
@@ -367,44 +401,55 @@ class PanelViewController: UIViewController {
         return CGPoint(x: 0, y: directionY)
     }
     
+    private func darkenOverlay(targetY: CGFloat) {
+        let overlayAlpha: CGFloat =  calculateOverlayOpacity(maxOpacity: 0.85, targetY: targetY)
+        backViewOverlay.backgroundColor = UIColor.black.withAlphaComponent(overlayAlpha)
+    }
+    
     fileprivate func performStateChange(velocity: CGPoint) {
         togglePaneState(velocity: velocity)
         animatePane(velocity: velocity)
     }
     
+    private func setupBackViewOverlay() {
+        darkeningMinY = view.frame.height/2
+        darkenOverlay(targetY: targetPoint.y)
+        view.addSubview(backViewOverlay)
+    }
+
     private func togglePaneState(velocity: CGPoint) {
         if showsMidState {
             updatePaneState(velocity: velocity)
             return
         }
-        if paneState == .open {
-            paneState = .closed
+        if panelState == .open {
+            panelState = .closed
         } else {
-            paneState = .open
+            panelState = .open
         }
     }
     
     fileprivate func updatePaneState(velocity: CGPoint) {
-        previousPaneState = paneState
+        previousPaneState = panelState
         
         if velocity.y >= 0 {
-            switch paneState {
+            switch panelState {
             case .closed:
                 // no op
                 break
             case .mid:
-                paneState = .closed
+                panelState = .closed
             case .open:
-                paneState = .mid
+                panelState = .mid
             }
             return
         }
         
-        switch paneState {
+        switch panelState {
         case .closed:
-            paneState = .mid
+            panelState = .mid
         case .mid:
-            paneState = .open
+            panelState = .open
         case .open:
             // no op
             break
@@ -426,11 +471,13 @@ extension PanelViewController: DraggableViewDelegate {
         let thisLocation = view.convert(location, to: self.view)
         if thisLocation.y < openTopMargin {
             view.cancelDrag()
+            return
         }
+        darkenOverlay(targetY: thisLocation.y)
     }
     
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
         isDragging = false
         performStateChange(velocity: velocity)
-    }
+    }    
 }

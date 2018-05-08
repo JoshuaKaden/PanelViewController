@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1723D197209BA59E008969F7 /* PassThroughView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1723D196209BA59E008969F7 /* PassThroughView.swift */; };
 		774B54AF201D3EDE00576911 /* Utility-Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B54AE201D3EDE00576911 /* Utility-Delay.swift */; };
 		8CCB210D2048A8BA007C31DE /* DragHandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB210C2048A8BA007C31DE /* DragHandleView.swift */; };
 		934577B22029FF7100D9044C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 934577B12029FF7100D9044C /* README.md */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1723D196209BA59E008969F7 /* PassThroughView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassThroughView.swift; sourceTree = "<group>"; };
 		774B54AE201D3EDE00576911 /* Utility-Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utility-Delay.swift"; sourceTree = "<group>"; };
 		8CCB210C2048A8BA007C31DE /* DragHandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragHandleView.swift; sourceTree = "<group>"; };
 		934577B12029FF7100D9044C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -85,6 +87,7 @@
 				8CCB210C2048A8BA007C31DE /* DragHandleView.swift */,
 				93A3C0A6201906C9009E1804 /* PaneBehavior.swift */,
 				93A3C0A020190130009E1804 /* PanelViewController.swift */,
+				1723D196209BA59E008969F7 /* PassThroughView.swift */,
 			);
 			path = "Framework source";
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 				93A3C0A520190397009E1804 /* ListViewController.swift in Sources */,
 				93A3C09F2018FF30009E1804 /* UIViewController+Parenting.swift in Sources */,
 				93A3C0A7201906C9009E1804 /* PaneBehavior.swift in Sources */,
+				1723D197209BA59E008969F7 /* PassThroughView.swift in Sources */,
 				93A3C0A320190389009E1804 /* MapViewController.swift in Sources */,
 				93D37FF52097797F00761908 /* ButtonContainerView.swift in Sources */,
 				93A3C0A120190130009E1804 /* PanelViewController.swift in Sources */,

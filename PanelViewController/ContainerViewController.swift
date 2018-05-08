@@ -48,7 +48,7 @@ final class ContainerViewController: UIViewController {
     
     @objc func didTapAnimateDown(_ sender: UIButton) {
         let newState: PanelState
-        switch panelViewController.paneState {
+        switch panelViewController.panelState {
         case .closed:
             return
         case .mid:
@@ -65,7 +65,7 @@ final class ContainerViewController: UIViewController {
     
     @objc func didTapAnimateUp(_ sender: UIButton) {
         let newState: PanelState
-        switch panelViewController.paneState {
+        switch panelViewController.panelState {
         case .closed:
             if panelViewController.showsMidState {
                 newState = .mid
