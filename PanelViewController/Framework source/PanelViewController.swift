@@ -299,7 +299,9 @@ class PanelViewController: UIViewController {
         
         let velocity: CGPoint
         if showsMidState {
-            velocity = calculateVelocity()
+            // If it shows the mid-state always returning a negative number
+            // tells the function to always go "up" to the next state, as if it's an up swipe
+            velocity = CGPoint(x: 0, y: -1)
         } else {
             velocity = paneBehavior.velocity
         }
