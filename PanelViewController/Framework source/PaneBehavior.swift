@@ -18,7 +18,7 @@ final class PaneBehavior: UIDynamicBehavior {
     var velocity = CGPoint.zero {
         didSet {
             let current = itemBehavior.linearVelocity(for: item)
-            let delta = CGPoint(x: velocity.x - current.x, y: velocity.y - current.y)
+            let delta = CGPoint(x: 0, y: velocity.y - current.y)
             itemBehavior.addLinearVelocity(delta, for: item)
         }
     }
@@ -31,7 +31,7 @@ final class PaneBehavior: UIDynamicBehavior {
         self.item = item
         
         let attachmentBehavior = UIAttachmentBehavior(item: item, attachedToAnchor: CGPoint.zero)
-        attachmentBehavior.damping = 0.4
+        attachmentBehavior.damping = 0.6
         attachmentBehavior.frequency = 3.5
         attachmentBehavior.length = 0
         self.attachmentBehavior = attachmentBehavior

@@ -41,8 +41,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="VhN-8j-Zvp"/>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="mainViewControllerStoryBoardID" value="MapViewController"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="panelViewControllerStoryBoardID" value="ListViewController"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="backViewControllerStoryBoardID" value="MapViewController"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="slidingViewControllerStoryBoardID" value="ListViewController"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

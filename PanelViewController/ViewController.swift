@@ -120,7 +120,7 @@ final class ViewController: UIViewController {
         {
             vc = panelVC
         } else {
-            vc = PanelViewController(mainViewController: MapViewController(), panelViewController: ListViewController())
+            vc = PanelViewController(backViewController: MapViewController(), slidingViewController: ListViewController())
         }
         
         configure(panelViewController: vc)
@@ -157,6 +157,19 @@ final class ViewController: UIViewController {
         default:
             break
         }
+        
+        let headerView = ButtonContainerView()
+        headerView.buttonAction = {
+            let alertVC = UIAlertController(title: "Button", message: "The button was tapped", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+                alertVC.dismiss(animated: true, completion: nil)
+            }
+            alertVC.addAction(action)
+            self.present(alertVC, animated: true, completion: nil)
+        }
+        // PanelViewController will adjust the origin and width as it sees fit. It will preserve whatever height you set.
+        headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 60)
+        vc.floatingHeaderView = headerView
     }
 }
 
