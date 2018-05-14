@@ -43,9 +43,7 @@ class DraggableView: UIView {
         
         let point = recognizer.translation(in: targetView)
 
-        var frame = self.frame
-        frame.size.height = targetView.bounds.height - frame.minY
-        self.frame = frame
+        height = targetView.height - y
         
         center = CGPoint(x: center.x, y: center.y + point.y)
         
