@@ -261,9 +261,11 @@ class PanelViewController: UIViewController {
         //2. backViewOverlay frame has to be the same as backViewController, per specs.
         //   if backViewControllerFrame is nil, then there should not be an overlay.
         backViewOverlay.frame = backViewController?.view.frame ?? CGRect.zero
-        
+
         let offset: CGFloat = floatingHeaderHeight
-        dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.bounds.width, height: closedHeight + offset)
+        //To hide the corner radius curve at the bottom increase the height of the dragHandleView
+        let bottomPadding: CGFloat = 10
+        dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.bounds.width, height: closedHeight + bottomPadding)
         
         if let floatingHeaderView = floatingHeaderView {
             let floatingHeaderMinY = self.floatingHeaderMinY ?? view.bounds.height / 2
