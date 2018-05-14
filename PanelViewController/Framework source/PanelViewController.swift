@@ -470,6 +470,7 @@ extension PanelViewController: DraggableViewDelegate {
     }
     
     func draggingChanged(view: DraggableView, location: CGPoint) {
+        self.view.setNeedsLayout()
         let thisLocation = view.convert(location, to: self.view)
         if thisLocation.y < openTopMargin {
             view.cancelDrag()
