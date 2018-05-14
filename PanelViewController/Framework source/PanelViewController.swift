@@ -157,7 +157,7 @@ class PanelViewController: UIViewController {
         case .mid:
             let y: CGFloat
             if let midTopMargin = midTopMargin {
-                y = midTopMargin
+                y = midTopMargin - floatingHeaderHeight - closedHeight
             } else {
                 y = view.bounds.height / 2
             }
@@ -247,7 +247,7 @@ class PanelViewController: UIViewController {
         case .closed:
             paneY = viewSize.height - closedHeight - closedBottomMargin - floatingHeaderHeight
         case .mid:
-            paneY = midTopMargin
+            paneY = midTopMargin - closedHeight - floatingHeaderHeight
         case .open:
             paneY = openTopMargin
         }
