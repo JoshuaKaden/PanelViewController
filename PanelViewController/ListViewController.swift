@@ -16,7 +16,9 @@ final class ListViewController: UIViewController {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.contentInsetAdjustmentBehavior = .never;
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        }
         view.addSubview(tableView)
     }
     
