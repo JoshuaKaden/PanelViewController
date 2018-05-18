@@ -25,6 +25,7 @@
 		93A3C0A7201906C9009E1804 /* PaneBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A6201906C9009E1804 /* PaneBehavior.swift */; };
 		93A3C0A920191653009E1804 /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A3C0A820191653009E1804 /* DraggableView.swift */; };
 		93D37FF52097797F00761908 /* ButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D37FF42097797F00761908 /* ButtonContainerView.swift */; };
+		93E2D48520AA34A2003B893B /* UIView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2D48420AA34A2003B893B /* UIView+Layout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		93A3C0A6201906C9009E1804 /* PaneBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneBehavior.swift; sourceTree = "<group>"; };
 		93A3C0A820191653009E1804 /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 		93D37FF42097797F00761908 /* ButtonContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonContainerView.swift; sourceTree = "<group>"; };
+		93E2D48420AA34A2003B893B /* UIView+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Layout.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 		93A3C09D2018FF30009E1804 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				93E2D48420AA34A2003B893B /* UIView+Layout.swift */,
 				93A3C09E2018FF30009E1804 /* UIViewController+Parenting.swift */,
 				774B54AE201D3EDE00576911 /* Utility-Delay.swift */,
 			);
@@ -264,6 +267,7 @@
 				1723D197209BA59E008969F7 /* PassThroughView.swift in Sources */,
 				93A3C0A320190389009E1804 /* MapViewController.swift in Sources */,
 				93D37FF52097797F00761908 /* ButtonContainerView.swift in Sources */,
+				93E2D48520AA34A2003B893B /* UIView+Layout.swift in Sources */,
 				93A3C0A120190130009E1804 /* PanelViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
