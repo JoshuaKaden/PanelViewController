@@ -22,6 +22,16 @@ class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
     
+    /// Whether the handle can be tapped to lower the pane to the next state.
+    ///
+    /// The default is `true`.
+    var canTapToClose: Bool = true
+    
+    /// Whether the handle can be tapped to raise the pane to the next state.
+    ///
+    /// The default is `true`.
+    var canTapToOpen: Bool = true
+    
     /// The height of the panel when it is closed.
     ///
     /// Increasing this value will increase the height of the drag area.
@@ -271,6 +281,20 @@ class PanelViewController: UIViewController {
     // MARK: - Handlers
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
+        if !canTapToClose && !canTapToOpen {
+            return
+        }
+        
+        let isOpening = panelState != .open && previousPaneState != .open
+        
+        if !canTapToClose && !isOpening {
+            return
+        }
+        
+        if !canTapToOpen && isOpening {
+            return
+        }
+        
         paneView.height = view.height + 88
         
         slidingViewController?.view.height = view.height - closedHeight - floatingHeaderHeight
@@ -280,12 +304,11 @@ class PanelViewController: UIViewController {
         
         let velocity: CGPoint
         if showsMidState {
-            // If it shows the mid-state always returning a negative number
-            // tells the function to always go "up" to the next state, as if it's an up swipe
-            velocity = CGPoint(x: 0, y: -1)
+            velocity = calculateVelocity()
         } else {
             velocity = paneBehavior.velocity
         }
+        
         performStateChange(velocity: velocity)
     }
     
