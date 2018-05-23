@@ -443,14 +443,22 @@ class PanelViewController: UIViewController {
             case .mid:
                 panelState = .closed
             case .open:
-                panelState = .mid
+                if paneView.y > midTopMargin ?? view.height / 2 {
+                    panelState = .closed
+                } else {
+                    panelState = .mid
+                }
             }
             return
         }
         
         switch panelState {
         case .closed:
-            panelState = .mid
+            if paneView.y < midTopMargin ?? view.height / 2 {
+                panelState = .open
+            } else {
+                panelState = .mid
+            }
         case .mid:
             panelState = .open
         case .open:
