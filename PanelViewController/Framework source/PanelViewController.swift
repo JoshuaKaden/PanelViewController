@@ -8,90 +8,87 @@
 
 import UIKit
 
-/**
- The three possible states of the panel that contains the sliding view controller.
- */
+/// The three possible states of the panel that contains the sliding view controller.
 enum PanelState {
     case closed, mid, open
 }
 
-/**
- A UIViewController that contains a back view controller, and a sliding view controller.
- 
- The sliding view controller is on a panel that can be dragged up and down, over the back view controller.
- 
- You can instantiate this directly, or subclass; either via code or on a storyboard.
- */
+/// A UIViewController that contains a back view controller, and a sliding view controller.
+///
+/// The sliding view controller is on a panel that can be dragged up and down, over the back view controller.
+///
+/// You can instantiate this directly, or subclass; either via code or on a storyboard.
 class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    /**
-     The height of the panel when it is closed.
-     
-     Increasing this value will increase the height of the drag area.
-     
-     The default value is `60`.
-     */
+    /// Whether the handle can be tapped to lower the pane to the next state.
+    ///
+    /// The default is `true`.
+    var canTapToClose: Bool = true
+    
+    /// Whether the handle can be tapped to raise the pane to the next state.
+    ///
+    /// The default is `true`.
+    var canTapToOpen: Bool = true
+    
+    /// The height of the panel when it is closed.
+    ///
+    /// Increasing this value will increase the height of the drag area.
+    ///
+    /// The default value is `60`.
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
     
-    /**
-     The distance between the bottom of the drag area and the bottom of the view.
-     
-     Increasing this value will show a portion of the sliding view controller when the panel state is `.closed`.
-     
-     The default value is `0`.
-     */
+    /// The distance between the bottom of the drag area and the bottom of the view.
+    ///
+    /// Increasing this value will show a portion of the sliding view controller when the panel state is `.closed`.
+    ///
+    /// The default value is `0`.
     @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
     
-    /**
-     If you have defined a `floatingHeaderView`, this property will determine the minimum `Y` for this view.
-     
-     The floating header view will move with the panel, but it will not move to a `Y` position that is less than this property.
-     
-     This is useful if you want a button to appear over the drag area, but you want it to be hidden based on the panel's height.
-     
-     If this value is `nil`, then half the view's height is used.
-     
-     The default value is `nil`.
-     */
+    /// Start point for backView to begin darkening.
+    ///
+    /// The default value is `0`.
+    var darkeningMinY: CGFloat = 0
+    
+    /// If you have defined a `floatingHeaderView`, this property will determine the minimum `Y` for this view.
+    ///
+    /// The floating header view will move with the panel, but it will not move to a `Y` position that is less than this property.
+    ///
+    /// This is useful if you want a button to appear over the drag area, but you want it to be hidden based on the panel's height.
+    ///
+    /// If this value is `nil`, then half the view's height is used.
+    ///
+    /// The default value is `nil`.
     var floatingHeaderMinY: CGFloat?
     
-    /**
-     This view will be shown above the drag area, and will move with it.
-     
-     Its origin will be adjusted, and its width. Its height will be preserved, so make sure to set the desired height yourself.
-     
-     It can function as a "pass-through" view for touches: Override `point(inside: with:)`, returning `false` for the areas you wish to pass through.
-     
-     If this value is `nil`, then no floating header will be displayed.
-     
-     The default value is `nil`.
-     */
+    /// This view will be shown above the drag area, and will move with it.
+    ///
+    /// Its origin will be adjusted, and its width. Its height will be preserved, so make sure to set the desired height yourself.
+    ///
+    /// It can function as a "pass-through" view for touches: Override `point(inside: with:)`, returning `false` for the areas you wish to pass through.
+    ///
+    /// If this value is `nil`, then no floating header will be displayed.
+    ///
+    /// The default value is `nil`.
     var floatingHeaderView: UIView? {
         get { return paneView.floatingHeaderView }
         set { paneView.floatingHeaderView = newValue }
     }
     
-    /**
-     The distance between the panel and the top of the view when the panel state equals `.mid`.
-     
-     If this value is `nil`, then half the view's height is used.
-     
-     The default value is `nil`.
-     */
+    /// The distance between the panel and the top of the view when the panel state equals `.mid`.
+    ///
+    /// If this value is `nil`, then half the view's height is used.
+    ///
+    /// The default value is `nil`.
     var midTopMargin: CGFloat?
     
-    /**
-     The distance between the panel and the top of the view when the panel state equals `.open`.
-     
-     The default value is `90`.
-     */
+    /// The distance between the panel and the top of the view when the panel state equals `.open`.
+    ///
+    /// The default value is `90`.
 	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
     
-    /**
-     The background color of the panel's drag area.
-     */
+    /// The background color of the panel's drag area.
     var panelBackgroundColor: UIColor? {
         get { return paneView.backgroundColor }
         set {
@@ -100,29 +97,20 @@ class PanelViewController: UIViewController {
         }
     }
     
-    /**
-     The background color of the panel's drag area handle.
-     */
+    /// The background color of the panel's drag area handle.
     var panelHandleColor: UIColor? {
         get { return dragHandleView.handleColor }
         set { dragHandleView.handleColor = newValue }
     }
     
-    /**
-     If `true`, there are three possible states for the panel: open, closed, and mid.
-     
-     If `false`, the panel is either open or closed.
-     */
+    /// If `true`, there are three possible states for the panel: open, closed, and mid.
+    ///
+    /// If `false`, the panel is either open or closed.
     @IBInspectable var showsMidState: Bool = true
     
-    /**
-     The intitial panel state. The default is `.closed`.
-     */
+    /// The intitial panel state. The default is `.closed`.
     var startingState: PanelState = .closed
 	
-    //start point for backView to begin darkening
-    var darkeningMinY: CGFloat = 0
-
     // MARK: - Public Static Properties
     
     static let defaultClosedHeight = CGFloat(60)
@@ -144,7 +132,7 @@ class PanelViewController: UIViewController {
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
     private(set) var panelState: PanelState = .closed
     @objc private let paneView = DraggableView()
-    private var previousPaneState: PanelState = .closed
+    private var previousPanelState: PanelState = .closed
     private(set) var slidingViewController: UIViewController?
     @IBInspectable private var slidingViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
@@ -153,17 +141,17 @@ class PanelViewController: UIViewController {
         let size = view.bounds.size
         switch panelState {
         case .closed:
-            return CGPoint(x: size.width / 2, y: size.height + (paneView.bounds.size.height / 2 - closedHeight - closedBottomMargin - floatingHeaderHeight))
+            return CGPoint(x: size.width / 2, y: size.height + (paneView.height / 2 - closedHeight - closedBottomMargin - floatingHeaderHeight))
         case .mid:
             let y: CGFloat
             if let midTopMargin = midTopMargin {
                 y = midTopMargin - floatingHeaderHeight - closedHeight
             } else {
-                y = view.bounds.height / 2
+                y = size.height / 2
             }
-            return CGPoint(x: size.width / 2, y: (paneView.bounds.size.height / 2) + y)
+            return CGPoint(x: size.width / 2, y: (paneView.height / 2) + y)
         case .open:
-            return CGPoint(x: size.width / 2, y: (paneView.bounds.size.height / 2) + openTopMargin)
+            return CGPoint(x: size.width / 2, y: (paneView.height / 2) + openTopMargin)
         }
     }
     
@@ -207,7 +195,7 @@ class PanelViewController: UIViewController {
         }
         
         panelState = startingState
-        previousPaneState = startingState
+        previousPanelState = startingState
         
         paneView.delegate = self
         view.addSubview(paneView)
@@ -240,7 +228,7 @@ class PanelViewController: UIViewController {
         
         if isAnimating { return }
         
-        let viewSize = view.bounds.size
+        let viewSize = view.size
         let midTopMargin = self.midTopMargin ?? viewSize.height / 2
         var paneY: CGFloat = 0
         switch panelState {
@@ -256,73 +244,85 @@ class PanelViewController: UIViewController {
             isFirstLayout = false
             paneView.frame = CGRect(x: 0, y: paneY, width: viewSize.width, height: (viewSize.height + 88) - paneY)
         }
+        
         //1. per specs, set backView frame
         backViewController?.view.frame = view.bounds
         //2. backViewOverlay frame has to be the same as backViewController, per specs.
         //   if backViewControllerFrame is nil, then there should not be an overlay.
         backViewOverlay.frame = backViewController?.view.frame ?? CGRect.zero
 
-        let offset: CGFloat = floatingHeaderHeight
         //To hide the corner radius curve at the bottom increase the height of the dragHandleView
         let bottomPadding: CGFloat = 10
-        dragHandleView.frame = CGRect(x: 0, y: offset, width: paneView.bounds.width, height: closedHeight + bottomPadding)
+        dragHandleView.frame = CGRect(x: 0, y: floatingHeaderHeight, width: paneView.width, height: closedHeight + bottomPadding)
         
         if let floatingHeaderView = floatingHeaderView {
-            let floatingHeaderMinY = self.floatingHeaderMinY ?? view.bounds.height / 2
-            let frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
-            if paneView.frame.origin.y < floatingHeaderMinY {
-                let floatOffset = floatingHeaderMinY - paneView.frame.origin.y
-                floatingHeaderView.frame = CGRect(x: frame.origin.x, y: floatOffset, width: frame.size.width, height: floatingHeaderHeight)
+            let floatingHeaderMinY = self.floatingHeaderMinY ?? view.height / 2
+            if paneView.y < floatingHeaderMinY {
+                floatingHeaderView.y = floatingHeaderMinY - paneView.y
             } else {
-                floatingHeaderView.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: floatingHeaderHeight)
+                floatingHeaderView.y = 0
             }
+            floatingHeaderView.width = paneView.width
         }
         
-        if isDragging {
-            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight)
-        } else {
-            slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + offset, width: paneView.bounds.width, height: viewSize.height - closedHeight - paneY - offset)
+        if let slidingView = slidingViewController?.view {
+            slidingView.y = closedHeight + floatingHeaderHeight
+            slidingView.width = paneView.width
+            if isDragging {
+                slidingView.height = viewSize.height - closedHeight
+            } else {
+                slidingView.height = viewSize.height - paneView.y - slidingView.y
+            }
         }
 
-        paneView.frame = CGRect(x: 0, y: paneView.frame.origin.y, width: paneView.frame.size.width, height: paneView.frame.size.height)
+        paneView.x = 0
     }
     
     // MARK: - Handlers
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
-        var paneFrame = paneView.frame
-        paneFrame.size.height = view.bounds.height + 88
-        paneView.frame = paneFrame
+        if !canTapToClose && !canTapToOpen {
+            return
+        }
         
-        slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight - floatingHeaderHeight)
+        let isOpening = panelState != .open && previousPaneState != .open
+        
+        if !canTapToClose && !isOpening {
+            return
+        }
+        
+        if !canTapToOpen && isOpening {
+            return
+        }
+        
+        paneView.height = view.height + 88
+        
+        slidingViewController?.view.height = view.height - closedHeight - floatingHeaderHeight
         delay(0.33) {
             self.view.setNeedsLayout()
         }
         
         let velocity: CGPoint
         if showsMidState {
-            // If it shows the mid-state always returning a negative number
-            // tells the function to always go "up" to the next state, as if it's an up swipe
-            velocity = CGPoint(x: 0, y: -1)
+            velocity = calculateVelocity()
         } else {
             velocity = paneBehavior.velocity
         }
+        
         performStateChange(velocity: velocity)
     }
     
     // MARK: - Public Methods
     
-    /**
-     Animates the pane to the specified state.
-     
-     - Parameter to: The desired state
-     */
+    /// Animates the pane to the specified state.
+    ///
+    /// - Parameter to: The desired state
     func changeState(to newState: PanelState) {
         if newState == .mid && !showsMidState {
             return
         }
         
-        previousPaneState = panelState
+        previousPanelState = panelState
         panelState = newState
         animatePane(velocity: calculateVelocity())
     }
@@ -330,22 +330,20 @@ class PanelViewController: UIViewController {
     // MARK: - Private Methods
     
     fileprivate func animatePane(velocity: CGPoint) {
-        var paneFrame = paneView.frame
-        paneFrame.size.height = view.bounds.height + 88
-        paneView.frame = paneFrame
+        paneView.height = view.height + 88
+        
         // We're using targetY as a reference point for the darkening overlay
         let targetY: CGFloat
         switch panelState {
         case .closed:
-            targetY = view.bounds.height - closedHeight
+            targetY = view.height - closedHeight
         case .mid:
-            targetY = midTopMargin ?? view.bounds.size.height / 2
+            targetY = midTopMargin ?? view.height / 2
         case .open:
             targetY = openTopMargin
         }
         
         if let floatingHeaderView = floatingHeaderView {
-            let frame = CGRect(x: 0, y: 0, width: paneView.bounds.width, height: floatingHeaderHeight)
             let targetY = targetPoint.y - (paneView.bounds.height / 2)
             
             let floatTargetY: CGFloat
@@ -357,7 +355,7 @@ class PanelViewController: UIViewController {
             }
             
             UIView.animate(withDuration: 0.33, animations: {
-                floatingHeaderView.frame = CGRect(x: frame.origin.x, y: floatTargetY, width: frame.size.width, height: self.floatingHeaderHeight)
+                floatingHeaderView.y = floatTargetY
                 self.darkenOverlay(targetY: targetY)
             })
         } else {
@@ -366,7 +364,7 @@ class PanelViewController: UIViewController {
             })
         }
         
-        slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight - floatingHeaderHeight)
+        slidingViewController?.view.height = view.height - closedHeight - floatingHeaderHeight
         
         paneBehavior.targetPoint = targetPoint
         paneBehavior.velocity = velocity
@@ -390,7 +388,7 @@ class PanelViewController: UIViewController {
 
     private func calculateVelocity() -> CGPoint {
         let directionY: CGFloat
-        switch previousPaneState {
+        switch previousPanelState {
         case .closed:
             directionY = -1
         case .mid:
@@ -434,7 +432,7 @@ class PanelViewController: UIViewController {
     }
     
     fileprivate func updatePaneState(velocity: CGPoint) {
-        previousPaneState = panelState
+        previousPanelState = panelState
         
         if velocity.y >= 0 {
             switch panelState {
@@ -444,14 +442,22 @@ class PanelViewController: UIViewController {
             case .mid:
                 panelState = .closed
             case .open:
-                panelState = .mid
+                if paneView.y > midTopMargin ?? view.height / 2 {
+                    panelState = .closed
+                } else {
+                    panelState = .mid
+                }
             }
             return
         }
         
         switch panelState {
         case .closed:
-            panelState = .mid
+            if paneView.y < midTopMargin ?? view.height / 2 {
+                panelState = .open
+            } else {
+                panelState = .mid
+            }
         case .mid:
             panelState = .open
         case .open:
@@ -468,7 +474,7 @@ extension PanelViewController: DraggableViewDelegate {
     func draggingBegan(view: DraggableView) {
         animator.removeAllBehaviors()
         isDragging = true
-        slidingViewController?.view.frame = CGRect(x: 0, y: closedHeight + floatingHeaderHeight, width: paneView.bounds.width, height: view.bounds.height - closedHeight)
+        slidingViewController?.view.height = view.height - closedHeight
     }
     
     func draggingChanged(view: DraggableView, location: CGPoint) {
@@ -484,5 +490,5 @@ extension PanelViewController: DraggableViewDelegate {
     func draggingEnded(view: DraggableView, velocity: CGPoint) {
         isDragging = false
         performStateChange(velocity: velocity)
-    }    
+    }
 }
