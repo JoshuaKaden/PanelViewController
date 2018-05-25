@@ -144,7 +144,7 @@ class PanelViewController: UIViewController {
     private lazy var paneBehavior = { PaneBehavior(item: paneView) }()
     private(set) var panelState: PanelState = .closed
     @objc private let paneView = DraggableView()
-    private var previousPaneState: PanelState = .closed
+    private var previousPanelState: PanelState = .closed
     private(set) var slidingViewController: UIViewController?
     @IBInspectable private var slidingViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
@@ -207,7 +207,7 @@ class PanelViewController: UIViewController {
         }
         
         panelState = startingState
-        previousPaneState = startingState
+        previousPanelState = startingState
         
         paneView.delegate = self
         view.addSubview(paneView)
@@ -323,7 +323,7 @@ class PanelViewController: UIViewController {
             return
         }
         
-        previousPaneState = panelState
+        previousPanelState = panelState
         panelState = newState
         animatePane(velocity: calculateVelocity())
     }
@@ -389,7 +389,7 @@ class PanelViewController: UIViewController {
 
     private func calculateVelocity() -> CGPoint {
         let directionY: CGFloat
-        switch previousPaneState {
+        switch previousPanelState {
         case .closed:
             directionY = -1
         case .mid:
@@ -433,7 +433,7 @@ class PanelViewController: UIViewController {
     }
     
     fileprivate func updatePaneState(velocity: CGPoint) {
-        previousPaneState = panelState
+        previousPanelState = panelState
         
         if velocity.y >= 0 {
             switch panelState {
@@ -443,14 +443,22 @@ class PanelViewController: UIViewController {
             case .mid:
                 panelState = .closed
             case .open:
-                panelState = .mid
+                if paneView.y > midTopMargin ?? view.height / 2 {
+                    panelState = .closed
+                } else {
+                    panelState = .mid
+                }
             }
             return
         }
         
         switch panelState {
         case .closed:
-            panelState = .mid
+            if paneView.y < midTopMargin ?? view.height / 2 {
+                panelState = .open
+            } else {
+                panelState = .mid
+            }
         case .mid:
             panelState = .open
         case .open:
