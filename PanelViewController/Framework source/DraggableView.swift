@@ -15,6 +15,8 @@ protocol DraggableViewDelegate: class {
 }
 
 class DraggableView: UIView {
+    let dragHandleView = DragHandleView()
+
     weak var delegate: DraggableViewDelegate?
     
     var floatingHeaderView: UIView? {
@@ -34,7 +36,7 @@ class DraggableView: UIView {
         guard let _ = newWindow else { return }
         
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
-        addGestureRecognizer(recognizer)
+        dragHandleView.addGestureRecognizer(recognizer)
         self.recognizer = recognizer
     }
     

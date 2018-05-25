@@ -36,7 +36,7 @@ class PanelViewController: UIViewController {
     ///
     /// Increasing this value will increase the height of the drag area.
     ///
-    /// The default value is `60`.
+    /// The default value is `44`.
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
     
     /// The distance between the bottom of the drag area and the bottom of the view.
@@ -85,7 +85,7 @@ class PanelViewController: UIViewController {
     
     /// The distance between the panel and the top of the view when the panel state equals `.open`.
     ///
-    /// The default value is `90`.
+    /// The default value is `88`.
 	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
     
     /// The background color of the panel's drag area.
@@ -94,6 +94,15 @@ class PanelViewController: UIViewController {
         set {
             paneView.backgroundColor = newValue
             dragHandleView.backgroundColor = newValue
+        }
+    }
+    
+    /// The corner radius of the panel.
+    ///
+    /// The default value is `8`.
+    var panelCornerRadius: CGFloat = PanelViewController.defaultPanelCornerRadius {
+        didSet {
+            paneView.layer.cornerRadius = panelCornerRadius
         }
     }
     
@@ -113,9 +122,10 @@ class PanelViewController: UIViewController {
 	
     // MARK: - Public Static Properties
     
-    static let defaultClosedHeight = CGFloat(60)
+    static let defaultClosedHeight = CGFloat(44)
     static let defaultClosedBottomMargin = CGFloat(0)
-    static let defaultOpenTopMargin = CGFloat(90)
+    static let defaultOpenTopMargin = CGFloat(88)
+    static let defaultPanelCornerRadius = CGFloat(8)
     
     // MARK: - Private Properties
     
@@ -124,7 +134,7 @@ class PanelViewController: UIViewController {
     private lazy var animator = { UIDynamicAnimator(referenceView: view) }()
     private(set) var backViewController: UIViewController?
     @IBInspectable private var backViewControllerStoryBoardID : String?
-    private let dragHandleView = DragHandleView()
+    private var dragHandleView: DragHandleView { return paneView.dragHandleView }
     private var floatingHeaderHeight: CGFloat { return floatingHeaderView?.bounds.height ?? 0 }
     private var isAnimating = false
     fileprivate var isDragging = false
@@ -204,12 +214,12 @@ class PanelViewController: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPaneView(_:)))
         dragHandleView.addGestureRecognizer(tap)
-        dragHandleView.layer.cornerRadius = 8
+        dragHandleView.layer.cornerRadius = panelCornerRadius
         if panelBackgroundColor == nil {
-            dragHandleView.backgroundColor = .lightGray
+            dragHandleView.backgroundColor = .white
         }
         if dragHandleView.handleColor == nil {
-            dragHandleView.handleColor = .darkGray
+            dragHandleView.handleColor = .lightGray
         }
         paneView.addSubview(dragHandleView)
         
@@ -285,7 +295,7 @@ class PanelViewController: UIViewController {
             return
         }
         
-        let isOpening = panelState != .open && previousPaneState != .open
+        let isOpening = panelState != .open && previousPanelState != .open
         
         if !canTapToClose && !isOpening {
             return

@@ -19,7 +19,7 @@ final class ButtonContainerView: UIView {
         
         button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
         button.backgroundColor = .white
-        button.setTitle("Center", for: .normal)
+        button.setTitle("Button", for: .normal)
         button.setTitleColor(.black, for: .normal)
         addSubview(button)
     }
