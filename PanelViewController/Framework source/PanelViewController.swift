@@ -8,90 +8,87 @@
 
 import UIKit
 
-/**
- The three possible states of the panel that contains the sliding view controller.
- */
+/// The three possible states of the panel that contains the sliding view controller.
 enum PanelState {
     case closed, mid, open
 }
 
-/**
- A UIViewController that contains a back view controller, and a sliding view controller.
- 
- The sliding view controller is on a panel that can be dragged up and down, over the back view controller.
- 
- You can instantiate this directly, or subclass; either via code or on a storyboard.
- */
+/// A UIViewController that contains a back view controller, and a sliding view controller.
+///
+/// The sliding view controller is on a panel that can be dragged up and down, over the back view controller.
+///
+/// You can instantiate this directly, or subclass; either via code or on a storyboard.
 class PanelViewController: UIViewController {
     
     // MARK: - Public Properties
     
-    /**
-     The height of the panel when it is closed.
-     
-     Increasing this value will increase the height of the drag area.
-     
-     The default value is `60`.
-     */
+    /// Whether the handle can be tapped to lower the pane to the next state.
+    ///
+    /// The default is `true`.
+    var canTapToClose: Bool = true
+    
+    /// Whether the handle can be tapped to raise the pane to the next state.
+    ///
+    /// The default is `true`.
+    var canTapToOpen: Bool = true
+    
+    /// The height of the panel when it is closed.
+    ///
+    /// Increasing this value will increase the height of the drag area.
+    ///
+    /// The default value is `60`.
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
     
-    /**
-     The distance between the bottom of the drag area and the bottom of the view.
-     
-     Increasing this value will show a portion of the sliding view controller when the panel state is `.closed`.
-     
-     The default value is `0`.
-     */
+    /// The distance between the bottom of the drag area and the bottom of the view.
+    ///
+    /// Increasing this value will show a portion of the sliding view controller when the panel state is `.closed`.
+    ///
+    /// The default value is `0`.
     @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
     
-    /**
-     If you have defined a `floatingHeaderView`, this property will determine the minimum `Y` for this view.
-     
-     The floating header view will move with the panel, but it will not move to a `Y` position that is less than this property.
-     
-     This is useful if you want a button to appear over the drag area, but you want it to be hidden based on the panel's height.
-     
-     If this value is `nil`, then half the view's height is used.
-     
-     The default value is `nil`.
-     */
+    /// Start point for backView to begin darkening.
+    ///
+    /// The default value is `0`.
+    var darkeningMinY: CGFloat = 0
+    
+    /// If you have defined a `floatingHeaderView`, this property will determine the minimum `Y` for this view.
+    ///
+    /// The floating header view will move with the panel, but it will not move to a `Y` position that is less than this property.
+    ///
+    /// This is useful if you want a button to appear over the drag area, but you want it to be hidden based on the panel's height.
+    ///
+    /// If this value is `nil`, then half the view's height is used.
+    ///
+    /// The default value is `nil`.
     var floatingHeaderMinY: CGFloat?
     
-    /**
-     This view will be shown above the drag area, and will move with it.
-     
-     Its origin will be adjusted, and its width. Its height will be preserved, so make sure to set the desired height yourself.
-     
-     It can function as a "pass-through" view for touches: Override `point(inside: with:)`, returning `false` for the areas you wish to pass through.
-     
-     If this value is `nil`, then no floating header will be displayed.
-     
-     The default value is `nil`.
-     */
+    /// This view will be shown above the drag area, and will move with it.
+    ///
+    /// Its origin will be adjusted, and its width. Its height will be preserved, so make sure to set the desired height yourself.
+    ///
+    /// It can function as a "pass-through" view for touches: Override `point(inside: with:)`, returning `false` for the areas you wish to pass through.
+    ///
+    /// If this value is `nil`, then no floating header will be displayed.
+    ///
+    /// The default value is `nil`.
     var floatingHeaderView: UIView? {
         get { return paneView.floatingHeaderView }
         set { paneView.floatingHeaderView = newValue }
     }
     
-    /**
-     The distance between the panel and the top of the view when the panel state equals `.mid`.
-     
-     If this value is `nil`, then half the view's height is used.
-     
-     The default value is `nil`.
-     */
+    /// The distance between the panel and the top of the view when the panel state equals `.mid`.
+    ///
+    /// If this value is `nil`, then half the view's height is used.
+    ///
+    /// The default value is `nil`.
     var midTopMargin: CGFloat?
     
-    /**
-     The distance between the panel and the top of the view when the panel state equals `.open`.
-     
-     The default value is `90`.
-     */
+    /// The distance between the panel and the top of the view when the panel state equals `.open`.
+    ///
+    /// The default value is `90`.
 	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
     
-    /**
-     The background color of the panel's drag area.
-     */
+    /// The background color of the panel's drag area.
     var panelBackgroundColor: UIColor? {
         get { return paneView.backgroundColor }
         set {
@@ -100,29 +97,20 @@ class PanelViewController: UIViewController {
         }
     }
     
-    /**
-     The background color of the panel's drag area handle.
-     */
+    /// The background color of the panel's drag area handle.
     var panelHandleColor: UIColor? {
         get { return dragHandleView.handleColor }
         set { dragHandleView.handleColor = newValue }
     }
     
-    /**
-     If `true`, there are three possible states for the panel: open, closed, and mid.
-     
-     If `false`, the panel is either open or closed.
-     */
+    /// If `true`, there are three possible states for the panel: open, closed, and mid.
+    ///
+    /// If `false`, the panel is either open or closed.
     @IBInspectable var showsMidState: Bool = true
     
-    /**
-     The intitial panel state. The default is `.closed`.
-     */
+    /// The intitial panel state. The default is `.closed`.
     var startingState: PanelState = .closed
 	
-    //start point for backView to begin darkening
-    var darkeningMinY: CGFloat = 0
-
     // MARK: - Public Static Properties
     
     static let defaultClosedHeight = CGFloat(60)
@@ -293,6 +281,20 @@ class PanelViewController: UIViewController {
     // MARK: - Handlers
     
     @objc func didTapPaneView(_ sender: UITapGestureRecognizer) {
+        if !canTapToClose && !canTapToOpen {
+            return
+        }
+        
+        let isOpening = panelState != .open && previousPaneState != .open
+        
+        if !canTapToClose && !isOpening {
+            return
+        }
+        
+        if !canTapToOpen && isOpening {
+            return
+        }
+        
         paneView.height = view.height + 88
         
         slidingViewController?.view.height = view.height - closedHeight - floatingHeaderHeight
@@ -302,22 +304,19 @@ class PanelViewController: UIViewController {
         
         let velocity: CGPoint
         if showsMidState {
-            // If it shows the mid-state always returning a negative number
-            // tells the function to always go "up" to the next state, as if it's an up swipe
-            velocity = CGPoint(x: 0, y: -1)
+            velocity = calculateVelocity()
         } else {
             velocity = paneBehavior.velocity
         }
+        
         performStateChange(velocity: velocity)
     }
     
     // MARK: - Public Methods
     
-    /**
-     Animates the pane to the specified state.
-     
-     - Parameter to: The desired state
-     */
+    /// Animates the pane to the specified state.
+    ///
+    /// - Parameter to: The desired state
     func changeState(to newState: PanelState) {
         if newState == .mid && !showsMidState {
             return
