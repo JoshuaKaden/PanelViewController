@@ -37,14 +37,26 @@ class PanelViewController: UIViewController {
     /// Increasing this value will increase the height of the drag area.
     ///
     /// The default value is `44`.
-    @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight
+    @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight {
+        didSet {
+            if isViewLoaded {
+                animatePane(velocity: calculateVelocity())
+            }
+        }
+    }
     
     /// The distance between the bottom of the drag area and the bottom of the view.
     ///
     /// Increasing this value will show a portion of the sliding view controller when the panel state is `.closed`.
     ///
     /// The default value is `0`.
-    @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin
+    @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin {
+        didSet {
+            if isViewLoaded {
+                animatePane(velocity: calculateVelocity())
+            }
+        }
+    }
     
     /// Start point for backView to begin darkening.
     ///
@@ -81,12 +93,24 @@ class PanelViewController: UIViewController {
     /// If this value is `nil`, then half the view's height is used.
     ///
     /// The default value is `nil`.
-    var midTopMargin: CGFloat?
+    var midTopMargin: CGFloat? {
+        didSet {
+            if isViewLoaded {
+                animatePane(velocity: calculateVelocity())
+            }
+        }
+    }
     
     /// The distance between the panel and the top of the view when the panel state equals `.open`.
     ///
     /// The default value is `88`.
-	@IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin
+    @IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin {
+        didSet {
+            if isViewLoaded {
+                animatePane(velocity: calculateVelocity())
+            }
+        }
+    }
     
     /// The background color of the panel's drag area.
     var panelBackgroundColor: UIColor? {
