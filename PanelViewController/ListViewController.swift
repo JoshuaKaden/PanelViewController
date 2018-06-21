@@ -8,8 +8,12 @@
 
 import UIKit
 
+protocol ListViewControllerDataSource: class {
+    var records: [String] { get }
+}
+
 final class ListViewController: UIViewController {
-    private let records = ["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
+    weak var dataSource: ListViewControllerDataSource?
     private let tableView = UITableView()
     
     override func viewDidLoad() {
@@ -42,12 +46,14 @@ extension ListViewController: UITableViewDataSource {
             cell.accessoryType = .disclosureIndicator
         }
         
-        cell.textLabel?.text = records[indexPath.row]
+        if let records = dataSource?.records {
+            cell.textLabel?.text = records[indexPath.row]
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return records.count
+        return dataSource?.records.count ?? 0
     }
 }
 

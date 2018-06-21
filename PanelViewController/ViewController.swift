@@ -53,11 +53,18 @@ final class ViewController: UIViewController {
         
         let panelVC = buildPanelViewController()
         
+        guard let listVC = panelVC.slidingViewController as? ListViewController else {
+            return
+        }
+        
         let vc: UIViewController
         if containerizeSwitch.isOn {
-            vc = ContainerViewController(panelViewController: panelVC)
+            let containerVC = ContainerViewController(panelViewController: panelVC)
+            listVC.dataSource = containerVC
+            vc = containerVC
         } else {
             vc = panelVC
+            listVC.dataSource = self
         }
         
         navigationController?.pushViewController(vc, animated: true)
@@ -196,6 +203,18 @@ final class ViewController: UIViewController {
         vc.floatingHeaderView = headerView
     }
 }
+
+// MARK: - ListViewControllerDataSource
+
+extension ViewController: ListViewControllerDataSource {
+    var allRecords: [String] {
+        return ["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]
+    }
+
+    var records: [String] { return allRecords }
+}
+
+// MARK: - UITextFieldDelegate
 
 extension ViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
