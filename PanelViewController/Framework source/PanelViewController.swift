@@ -39,9 +39,12 @@ class PanelViewController: UIViewController {
     /// The default value is `44`.
     @IBInspectable var closedHeight: CGFloat = PanelViewController.defaultClosedHeight {
         didSet {
-            if isViewLoaded {
-                animatePane(velocity: calculateVelocity())
+            guard oldValue != closedHeight,
+                viewDidLayout
+                else {
+                    return
             }
+            animatePane(velocity: calculateVelocity())
         }
     }
     
@@ -52,9 +55,12 @@ class PanelViewController: UIViewController {
     /// The default value is `0`.
     @IBInspectable var closedBottomMargin: CGFloat = PanelViewController.defaultClosedBottomMargin {
         didSet {
-            if isViewLoaded {
-                animatePane(velocity: calculateVelocity())
+            guard oldValue != closedBottomMargin,
+                viewDidLayout
+                else {
+                    return
             }
+            animatePane(velocity: calculateVelocity())
         }
     }
     
@@ -95,9 +101,13 @@ class PanelViewController: UIViewController {
     /// The default value is `nil`.
     var midTopMargin: CGFloat? {
         didSet {
-            if isViewLoaded {
-                animatePane(velocity: calculateVelocity())
+            
+            guard oldValue != midTopMargin,
+                    viewDidLayout
+            else {
+                return
             }
+            animatePane(velocity: calculateVelocity())
         }
     }
     
@@ -106,9 +116,12 @@ class PanelViewController: UIViewController {
     /// The default value is `88`.
     @IBInspectable var openTopMargin: CGFloat = PanelViewController.defaultOpenTopMargin {
         didSet {
-            if isViewLoaded {
-                animatePane(velocity: calculateVelocity())
+            guard oldValue != openTopMargin,
+                viewDidLayout
+                else {
+                    return
             }
+            animatePane(velocity: calculateVelocity())
         }
     }
     
@@ -170,6 +183,7 @@ class PanelViewController: UIViewController {
     private(set) var slidingViewController: UIViewController?
     @IBInspectable private var slidingViewControllerStoryBoardID : String?
     private var stretchAllowance: CGFloat { return (view.bounds.height - openTopMargin) + closedHeight }
+    fileprivate var viewDidLayout = false
 
     private var targetPoint: CGPoint {
         let size = view.bounds.size
@@ -259,6 +273,7 @@ class PanelViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        viewDidLayout = true
         
         if isAnimating { return }
         
