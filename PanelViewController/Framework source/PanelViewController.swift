@@ -44,6 +44,8 @@ class PanelViewController: UIViewController {
                 else {
                     return
             }
+            slidingViewController?.view.y = closedHeight + floatingHeaderHeight
+            dragHandleView.height = closedHeight
             animatePane(velocity: calculateVelocity())
         }
     }

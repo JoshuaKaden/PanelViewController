@@ -184,12 +184,21 @@ final class ViewController: UIViewController {
         
         let headerView = ButtonContainerView()
         headerView.buttonAction = {
-            let alertVC = UIAlertController(title: "Button", message: "The button was tapped", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
-                alertVC.dismiss(animated: true, completion: nil)
+//            let alertVC = UIAlertController(title: "Button", message: "The button was tapped", preferredStyle: .alert)
+//            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+//                alertVC.dismiss(animated: true, completion: nil)
+//            }
+//            alertVC.addAction(action)
+//            self.present(alertVC, animated: true, completion: nil)
+            if (vc.panelState == .mid) {
+                vc.changeState(to: .closed)
+                vc.closedHeight = 0
             }
-            alertVC.addAction(action)
-            self.present(alertVC, animated: true, completion: nil)
+            else {
+                vc.changeState(to: .mid)
+                vc.closedHeight = 44
+            }
+            
         }
         // PanelViewController will adjust the origin and width as it sees fit. It will preserve whatever height you set.
         headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 60)
