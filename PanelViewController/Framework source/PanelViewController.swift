@@ -149,6 +149,12 @@ class PanelViewController: UIViewController {
         set { dragHandleView.handleColor = newValue }
     }
     
+    /// The Overlay color when the list animates to open state
+    var overlayColor: UIColor = PassThroughView.defaultOverlayColor
+    
+    /// The overlay opacity when the list is in open state
+    var overlayFinalOpacity: CGFloat = PassThroughView.defaultOverlayFinalOpacity
+    
     /// If `true`, there are three possible states for the panel: open, closed, and mid.
     ///
     /// If `false`, the panel is either open or closed.
@@ -453,8 +459,8 @@ class PanelViewController: UIViewController {
     }
     
     private func darkenOverlay(targetY: CGFloat) {
-        let overlayAlpha: CGFloat =  calculateOverlayOpacity(maxOpacity: 0.85, targetY: targetY)
-        backViewOverlay.backgroundColor = UIColor.black.withAlphaComponent(overlayAlpha)
+        let overlayAlpha: CGFloat =  calculateOverlayOpacity(maxOpacity: overlayFinalOpacity, targetY: targetY)
+        backViewOverlay.backgroundColor = overlayColor.withAlphaComponent(overlayAlpha)
     }
     
     fileprivate func performStateChange(velocity: CGPoint) {
