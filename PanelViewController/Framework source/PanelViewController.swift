@@ -44,6 +44,8 @@ class PanelViewController: UIViewController {
                 else {
                     return
             }
+            slidingViewController?.view.y = closedHeight + floatingHeaderHeight
+            dragHandleView.height = closedHeight
             animatePane(velocity: calculateVelocity())
         }
     }
@@ -453,7 +455,7 @@ class PanelViewController: UIViewController {
     }
     
     private func darkenOverlay(targetY: CGFloat) {
-        let overlayAlpha: CGFloat =  calculateOverlayOpacity(maxOpacity: 0.85, targetY: targetY)
+        let overlayAlpha: CGFloat =  calculateOverlayOpacity(maxOpacity: 0.60, targetY: targetY)
         backViewOverlay.backgroundColor = UIColor.black.withAlphaComponent(overlayAlpha)
     }
     
