@@ -151,6 +151,13 @@ class PanelViewController: UIViewController {
         set { dragHandleView.handleColor = newValue }
     }
     
+    /// A a subview to the panel's drag area.
+    var headerSeparatorColor: UIColor = .clear {
+        didSet {
+            dragHandleView.separatorColor = headerSeparatorColor
+        }
+    }
+    
     /// If `true`, there are three possible states for the panel: open, closed, and mid.
     ///
     /// If `false`, the panel is either open or closed.
